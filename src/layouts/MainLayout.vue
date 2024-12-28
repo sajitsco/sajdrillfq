@@ -8,9 +8,18 @@
         width: 100%;
         height: 100%;
         background-color: gray;
-        opacity: 0.8;
+        opacity: 0.4;
         z-index: 1000;
       "
+    >
+    </div>
+    <div
+      v-if="!$ss.loggedIn"
+      style="
+        border: 1px solid green;
+        z-index: 1001;
+      "
+      class="fixed-center"
     >
       <login />
     </div>
@@ -28,7 +37,7 @@
 import { ss } from 'src/boot/sajer'
 import login from 'src/components/Log-In.vue'
 ss.connect()
-//setInterval(() => ss.connect(), 10000)
+setInterval(() => ss.connect(), 60000)
 </script>
 
 <style></style>

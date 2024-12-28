@@ -11,32 +11,36 @@ export const useSajerStore = defineStore('sajer', {
     connect() {
       api
         .get('/p/sajer')
-        .then((res) => {
-          console.log(res.status)
+        .then(() => {
           this.connected = true
+          
+          api
+          .get('/s/sajer')
+          .then(() => {
+            this.loggedIn = true
+            
+          })
+          .catch(() => {
+            this.loggedIn = false
+          })
+
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
           this.connected = false
-        })
-        .finally(() => {
-          console.log('finally')
-        })
-    },
-    checkLoggedIn() {
-      api
-        .get('/s/sajer')
-        .then((res) => {
-          console.log(res.status)
-          this.loggedIn = true
-        })
-        .catch((err) => {
-          console.log(err)
           this.loggedIn = false
         })
-        .finally(() => {
-          console.log('finally')
-        })
+    },
+    login(username: string, password: string) {
+      api
+    .get('/p/auth/op/token', { auth: { password: password, username: username } })
+    .then((res) => {
+      api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data
+      this.loggedIn = true
+    })
+    .catch((err) => {
+      this.loggedIn = false
+      console.log(err)
+    })
     },
   },
 })
