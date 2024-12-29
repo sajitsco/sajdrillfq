@@ -1,11 +1,13 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
+import { ATaskStatus } from 'src/sajer/bpms'
 import type { ATask } from 'src/sajer/bpms'
 
 export const useSajerStore = defineStore('sajer', {
   state: () => ({
     connected: false,
     loggedIn: false,
+    activeTask: <ATask><unknown>null,
     atasks: <ATask[]>[],
   }),
 
@@ -38,6 +40,7 @@ export const useSajerStore = defineStore('sajer', {
     .then((res) => {
       api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data
       this.loggedIn = true
+      this.getATasks();
     })
     .catch((err) => {
       this.loggedIn = false
@@ -49,21 +52,42 @@ export const useSajerStore = defineStore('sajer', {
     .get<ATask[]>('/s/bpms/atask')
     .then((res) => {
       this.atasks = res.data
+      for (let index = 0; index < this.atasks.length; index++) {
+        const element = this.atasks[index];
+        if( element?.status == ATaskStatus.ACTIVE){
+          this.activeTask = element;
+          this.atasks.splice(index,1);
+        }
+      }
     })
     .catch(() => {
       this.atasks = []
     })
     },
     async updateATasks(atask: ATask) {
-      console.log("1");
       await api
     .put('/s/bpms/atask',atask)
     .then((res) => {
-      console.log("2");
       console.log(res);
+      this.activeTask = <ATask><unknown>null;
+      this.getATasks();
     })
     .catch((err) => {
-      console.log("3");
+      console.log(err);
+    })
+    },
+    async newATask() {
+      if( this.activeTask != null){
+        alert("There is an active Task")
+        return;
+      }
+      await api
+    .post<ATask>('/s/bpms/atask')
+    .then((res) => {
+      console.log(res);
+      this.activeTask = res.data;
+    })
+    .catch((err) => {
       console.log(err);
     })
     },

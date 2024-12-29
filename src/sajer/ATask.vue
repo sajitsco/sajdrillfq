@@ -17,6 +17,10 @@ const atask = defineModel<ATask>({
 });
 
 async function do1(){
+  if( ss.activeTask != null){
+        alert("There is an active Task")
+        return;
+      }
   atask.value.status = ATaskStatus.ACTIVE;
   await ss.updateATasks(atask.value);
 }
