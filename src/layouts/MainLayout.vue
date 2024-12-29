@@ -1,6 +1,20 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <div
+      v-if="!$ss.connected"
+      style="color: red;
+        border: 1px solid blue;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: gray;
+        opacity: 0.8;
+        z-index: 1002;
+      "
+    >
+    <h4 class="fixed-center">X Check Your Network Connection!</h4>
+    </div>
+    <div
       v-if="!$ss.loggedIn"
       style="
         border: 1px solid blue;

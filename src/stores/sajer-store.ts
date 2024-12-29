@@ -1,10 +1,12 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
+import type { ATask } from 'src/sajer/bpms'
 
 export const useSajerStore = defineStore('sajer', {
   state: () => ({
     connected: false,
     loggedIn: false,
+    atasks: <ATask[]>[],
   }),
 
   actions: {
@@ -40,6 +42,29 @@ export const useSajerStore = defineStore('sajer', {
     .catch((err) => {
       this.loggedIn = false
       console.log(err)
+    })
+    },
+    getATasks() {
+      api
+    .get<ATask[]>('/s/bpms/atask')
+    .then((res) => {
+      this.atasks = res.data
+    })
+    .catch(() => {
+      this.atasks = []
+    })
+    },
+    async updateATasks(atask: ATask) {
+      console.log("1");
+      await api
+    .put('/s/bpms/atask',atask)
+    .then((res) => {
+      console.log("2");
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log("3");
+      console.log(err);
     })
     },
   },
