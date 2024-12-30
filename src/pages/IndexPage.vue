@@ -3,7 +3,7 @@
     <div class="row">
       <div style="width: 100%; background-color: cornflowerblue;" class="q-ma-xs, q-pa-xs">
         <template v-if="$ss.activeTask">
-          <a-task v-model="$ss.activeTask" />
+          <active-task v-model="$ss.activeTask" />
         </template>
       </div>
       <div style="width: 100%;" v-for="(atask, index) in $ss.atasks" :key="atask.id" class="q-ma-xs, q-pa-xs">
@@ -20,4 +20,5 @@
 
 <script setup lang="ts">
 import ATask from "src/sajer/ATask.vue"
+import ActiveTask from "src/sajer/ActiveTask.vue"
 </script>

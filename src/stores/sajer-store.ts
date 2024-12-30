@@ -14,7 +14,7 @@ export const useSajerStore = defineStore('sajer', {
   actions: {
     connect() {
       api
-        .get('/p/sajer')
+        .get('/p/sajer', {headers:{Authorization: ""}})
         .then(() => {
           this.connected = true
           
