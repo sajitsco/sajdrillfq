@@ -2,18 +2,18 @@
   <q-page>
     <div class="row">
       <div style="width: 100%; background-color: cornflowerblue;" class="q-ma-xs, q-pa-xs">
-        <template v-if="$ss.activeTask">
-          <active-task v-model="$ss.activeTask" />
+        <template v-if="$ss.ss.activeTask">
+          <active-task v-model="$ss.ss.activeTask" />
         </template>
       </div>
-      <div style="width: 100%;" v-for="(atask, index) in $ss.atasks" :key="atask.id" class="q-ma-xs, q-pa-xs">
-        <template v-if="$ss.atasks[index]">
-          <a-task v-model="$ss.atasks[index]" />
+      <div style="width: 100%;" v-for="(atask, index) in $ss.ss.atasks" :key="atask.id" class="q-ma-xs, q-pa-xs">
+        <template v-if="$ss.ss.atasks[index]">
+          <a-task v-model="$ss.ss.atasks[index]" />
         </template>
       </div>
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add" color="accent" @click="$ss.newATask()" />
+      <q-btn fab icon="add" color="accent" @click="$ss.ss.newATask()" />
     </q-page-sticky>
   </q-page>
 </template>

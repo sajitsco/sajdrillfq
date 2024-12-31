@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <div
-      v-if="!$ss.connected"
+      v-if="!$ss.ss.connected"
       style="color: red;
         border: 1px solid blue;
         position: absolute;
@@ -13,9 +13,10 @@
       "
     >
     <h4 class="fixed-center">X Check Your Network Connection!</h4>
+    {{ $ss.ss.connected }}
     </div>
     <div
-      v-if="!$ss.loggedIn"
+      v-if="!$ss.ss.loggedIn"
       style="
         border: 1px solid blue;
         position: absolute;
@@ -28,7 +29,7 @@
     >
     </div>
     <div
-      v-if="!$ss.loggedIn"
+      v-if="!$ss.ss.loggedIn"
       style="
         border: 1px solid green;
         z-index: 1001;
@@ -39,7 +40,7 @@
     </div>
     <q-page-container
       :style="
-        $ss.connected ? { backgroundColor: 'paleturquoise' } : { backgroundColor: 'lightcoral' }
+        $ss.ss.connected ? { backgroundColor: 'paleturquoise' } : { backgroundColor: 'lightcoral' }
       "
     >
       <router-view />
