@@ -2,14 +2,7 @@
   <q-card bordered :style="atask.status == ATaskStatus.PAUSED ? { backgroundColor: 'grey' } : { backgroundColor: 'aquamarine' }"
     class="q-ma-sm, q-pa-sm">
     <q-card-actions>
-      <q-tree
-      :nodes="$ss.ss.accounts.children"
-      node-key="label"
-      v-model:expanded="expanded2"
-      default-expand-all
-    />
-    {{ $ss.ex.example1 }}
-<q-btn v-if="atask.status == ATaskStatus.ACTIVE" round color="secondary" icon="pause" @click="atask.status = ATaskStatus.PAUSED;$ss.ss.updateATasks(atask)" />
+<q-btn v-if="atask.status == ATaskStatus.ACTIVE" round color="secondary" icon="pause" @click="atask.status = ATaskStatus.PAUSED;$s.s.updateATasks(atask)" />
       <q-space />
       <q-btn color="primary" round :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
         @click="expanded = !expanded" />
@@ -21,7 +14,7 @@
         </q-card-section>
         <q-separator />
         <q-card-section>
-          {{ atask.status }}
+          <accounts-tree />
         </q-card-section>
         <q-separator />
         <q-card-section>
@@ -40,11 +33,10 @@
 <script setup lang="ts">
 import type { ATask } from './bpms';
 import { ATaskStatus } from './bpms';
+import AccountsTree from 'src/sajer/acc/AccountsTree.vue'
 import { ref } from 'vue';
 
 const expanded = ref(false);
-const expanded2 = ref([]);
-
 const atask = defineModel<ATask>({
   required: true,
 });

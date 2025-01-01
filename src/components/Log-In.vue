@@ -2,7 +2,7 @@
   <div style="background-color: white; padding: 5px;" class="justify-center items-center">
     <q-input v-model="un" />
     <q-input type="password" v-model="ps" />
-    <q-btn label="login" @click="$ss.ss.login(un,ps)" />
+    <q-btn label="login" @click="$s.s.login(un,ps)" />
   </div>
 </template>
 

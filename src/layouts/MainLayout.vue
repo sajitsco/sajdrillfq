@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <div
-      v-if="!$ss.ss.connected"
+      v-if="!$s.s.connected"
       style="color: red;
         border: 1px solid blue;
         position: absolute;
@@ -13,10 +13,10 @@
       "
     >
     <h4 class="fixed-center">X Check Your Network Connection!</h4>
-    {{ $ss.ss.connected }}
+    {{ $s.s.connected }}
     </div>
     <div
-      v-if="!$ss.ss.loggedIn"
+      v-if="!$s.s.loggedIn"
       style="
         border: 1px solid blue;
         position: absolute;
@@ -29,7 +29,7 @@
     >
     </div>
     <div
-      v-if="!$ss.ss.loggedIn"
+      v-if="!$s.s.loggedIn"
       style="
         border: 1px solid green;
         z-index: 1001;
@@ -40,7 +40,7 @@
     </div>
     <q-page-container
       :style="
-        $ss.ss.connected ? { backgroundColor: 'paleturquoise' } : { backgroundColor: 'lightcoral' }
+        $s.s.connected ? { backgroundColor: 'paleturquoise' } : { backgroundColor: 'lightcoral' }
       "
     >
       <router-view />
@@ -49,10 +49,10 @@
 </template>
 
 <script setup lang="ts">
-import { ss } from 'src/boot/sajer'
+import { es } from 'src/boot/sajer'
 import login from 'src/components/Log-In.vue'
-ss.connect()
-setInterval(() => ss.connect(), 60000)
+es.s.connect()
+setInterval(() => es.s.connect(), 60000)
 </script>
 
 <style></style>

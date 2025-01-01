@@ -1,7 +1,8 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 import { ATaskStatus } from 'src/sajer/bpms'
-import type { AccountTree, ATask } from 'src/sajer/bpms'
+import type { ATask } from 'src/sajer/bpms'
+import type { AccountTree } from 'src/sajer/acc/acc'
 
 export const useSajerStore = defineStore('sajer', {
   state: () => ({

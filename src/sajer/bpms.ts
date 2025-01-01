@@ -9,8 +9,3 @@ export enum ATaskStatus{
     id: string;
     status: ATaskStatus;
   }
-
-  export interface AccountTree{
-    code: number;
-    children: AccountTree[];
-  }

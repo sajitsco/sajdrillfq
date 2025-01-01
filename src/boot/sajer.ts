@@ -5,16 +5,16 @@ import { useSajerStore } from 'stores/sajer-store'
 const ss = useSajerStore()
 const ex = useExampleStore()
 
-const es = {ss: ss,ex: ex}
+const es = {s: ss,ex: ex}
 
 declare module 'vue' {
   interface ComponentCustomProperties {
-    $ss: typeof es
+    $s: typeof es
   }
 }
 
 export default defineBoot(({ app }) => {
-  app.config.globalProperties.$ss = es
+  app.config.globalProperties.$s = es
 })
 
-export { ss }
+export { es }

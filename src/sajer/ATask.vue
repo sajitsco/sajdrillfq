@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { ss } from 'src/boot/sajer';
+import { es } from 'src/boot/sajer';
 import type { ATask } from './bpms';
 import { ATaskStatus } from './bpms';
 
@@ -17,16 +17,16 @@ const atask = defineModel<ATask>({
 });
 
 async function do1(){
-  if( ss.activeTask != null){
+  if( es.s.activeTask != null){
         alert("There is an active Task")
         return;
       }
   atask.value.status = ATaskStatus.ACTIVE;
-  await ss.updateATasks(atask.value);
+  await es.s.updateATasks(atask.value);
 }
 
 async function do2(){
   atask.value.status = ATaskStatus.PAUSED;
-  await ss.updateATasks(atask.value);
+  await es.s.updateATasks(atask.value);
 }
 </script>
