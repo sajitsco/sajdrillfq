@@ -9,24 +9,24 @@
 
 <script setup lang="ts">
 import { es } from 'src/boot/sajer';
-import type { ATask } from './bpms';
-import { ATaskStatus } from './bpms';
+import type { ATask } from './entities';
+import { ATaskStatus } from './entities';
 
 const atask = defineModel<ATask>({
   required: true,
 });
 
 async function do1(){
-  if( es.s.activeTask != null){
+  if( es.b.activeTask != null){
         alert("There is an active Task")
         return;
       }
   atask.value.status = ATaskStatus.ACTIVE;
-  await es.s.updateATasks(atask.value);
+  await es.b.updateATasks(atask.value);
 }
 
 async function do2(){
   atask.value.status = ATaskStatus.PAUSED;
-  await es.s.updateATasks(atask.value);
+  await es.b.updateATasks(atask.value);
 }
 </script>

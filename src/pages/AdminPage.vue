@@ -1,5 +1,8 @@
 <template>
-  <q-page>
+  <q-page v-if="$s.s.roles.indexOf('ADMIN') > 0">
+    <div class="row">
+      aaa
+    </div>
 <action-button />
   </q-page>
 </template>

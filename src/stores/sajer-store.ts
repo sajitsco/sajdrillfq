@@ -1,36 +1,41 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
-import { ATaskStatus } from 'src/sajer/bpms'
-import type { ATask } from 'src/sajer/bpms'
-import type { AccountTree } from 'src/sajer/acc/acc'
+import { useACCStore } from 'src/sajer/acc/acc-store'
+import { useBPMSStore } from 'src/sajer/bpms/bpms-store'
+
+const uBPMS = useBPMSStore()
+const uACC = useACCStore()
+
+interface IJWT{
+  exp: number;
+  iat: number;
+  iss: string;
+  roles: string;
+  sub: string;
+}
 
 export const useSajerStore = defineStore('sajer', {
   state: () => ({
     connected: false,
     loggedIn: false,
-    activeTask: <ATask><unknown>null,
-    atasks: <ATask[]>[],
-    accounts: <AccountTree><unknown>{children:[{label: "Accounts"}]},
+    roles: '',
   }),
 
   actions: {
     connect() {
       api
-        .get('/p/sajer', {headers:{Authorization: ""}})
+        .get('/p/sajer', { headers: { Authorization: '' } })
         .then(() => {
           this.connected = true
-          console.log('sdafgdf');
 
           api
-          .get('/s/sajer')
-          .then(() => {
-            this.loggedIn = true
-            
-          })
-          .catch(() => {
-            this.loggedIn = false
-          })
-
+            .get('/s/sajer')
+            .then(() => {
+              this.loggedIn = true
+            })
+            .catch(() => {
+              this.loggedIn = false
+            })
         })
         .catch(() => {
           this.connected = false
@@ -39,81 +44,46 @@ export const useSajerStore = defineStore('sajer', {
     },
     login(username: string, password: string) {
       api
-    .get('/p/auth/op/token', { auth: { password: password, username: username } })
-    .then((res) => {
-      api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data
-      this.loggedIn = true
-      this.getATasks();
-      this.getAccounts();
-    })
-    .catch((err) => {
-      this.loggedIn = false
-      console.log(err)
-    })
-    },
-    getATasks() {
-      api
-    .get<ATask[]>('/s/bpms/atask')
-    .then((res) => {
-      this.atasks = res.data
-      for (let index = 0; index < this.atasks.length; index++) {
-        const element = this.atasks[index];
-        if( element?.status == ATaskStatus.ACTIVE){
-          this.activeTask = element;
-          this.atasks.splice(index,1);
-        }
-      }
-    })
-    .catch(() => {
-      this.atasks = []
-    })
-    },
-    async updateATasks(atask: ATask) {
-      await api
-    .put('/s/bpms/atask',atask)
-    .then(() => {
-      this.activeTask = <ATask><unknown>null;
-      this.getATasks();
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    },
-    async newATask() {
-      if( this.activeTask != null){
-        alert("There is an active Task")
-        return;
-      }
-      await api
-    .post<ATask>('/s/bpms/atask')
-    .then((res) => {
-      console.log(res);
-      this.activeTask = res.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    },
-    getAccounts() {
-      api
-    .get<AccountTree>('/s/acc/account')
-    .then((res) => {
-      this.accounts = res.data;
-      this.accounts.children = res.data.children.sort((n1,n2) => n1.code - n2.code);
-      for (let index = 0; index < this.accounts.children.length; index++) {
-        const element = this.accounts.children[index];
-        if(element){
-          element.children = element.children.sort((n1,n2) => n1.code - n2.code);
-        }
-      }
-      //console.log(res.data)
-    })
-    .catch(() => {
-      this.atasks = []
-    })
+        .get('/p/auth/op/token', { auth: { password: password, username: username } })
+        .then((res) => {
+          const jwt: IJWT = parseJwt(res.data);
+          api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data
+          this.loggedIn = true
+          uBPMS.getATasks();
+          uACC.getAccounts();
+          this.roles = jwt.roles;
+          if(jwt.roles == "ROLE_ADMIN"){
+            this.router.push("/f/admin");
+          } else {
+            this.router.push("/f/bpms")
+          }
+        })
+        .catch((err) => {
+          this.loggedIn = false
+          console.log(err)
+        })
     },
   },
 })
+
+function parseJwt(token: string) {
+  const base64Url = token.split('.')[1]
+  const base64 = base64Url?.replace(/-/g, '+').replace(/_/g, '/')
+  if (base64) {
+    const jsonPayload = decodeURIComponent(
+      window
+        .atob(base64)
+        .split('')
+        .map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        })
+        .join(''),
+    )
+    return JSON.parse(jsonPayload)
+  }
+
+  return ''
+}
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useSajerStore, import.meta.hot))

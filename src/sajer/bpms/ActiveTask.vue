@@ -2,7 +2,7 @@
   <q-card bordered :style="atask.status == ATaskStatus.PAUSED ? { backgroundColor: 'grey' } : { backgroundColor: 'aquamarine' }"
     class="q-ma-sm, q-pa-sm">
     <q-card-actions>
-<q-btn v-if="atask.status == ATaskStatus.ACTIVE" round color="secondary" icon="pause" @click="atask.status = ATaskStatus.PAUSED;$s.s.updateATasks(atask)" />
+<q-btn v-if="atask.status == ATaskStatus.ACTIVE" round color="secondary" icon="pause" @click="atask.status = ATaskStatus.PAUSED;$s.b.updateATasks(atask)" />
       <q-space />
       <q-btn color="primary" round :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
         @click="expanded = !expanded" />
@@ -31,8 +31,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ATask } from './bpms';
-import { ATaskStatus } from './bpms';
+import type { ATask } from './entities';
+import { ATaskStatus } from './entities';
 import AccountsTree from 'src/sajer/acc/AccountsTree.vue'
 import { ref } from 'vue';
 

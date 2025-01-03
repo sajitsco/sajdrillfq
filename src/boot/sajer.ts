@@ -1,11 +1,13 @@
 import { defineBoot } from '#q-app/wrappers'
-import { useExampleStore } from 'src/stores/example-store'
+import { useACCStore } from 'src/sajer/acc/acc-store'
+import { useBPMSStore } from 'src/sajer/bpms/bpms-store'
 import { useSajerStore } from 'stores/sajer-store'
 
 const ss = useSajerStore()
-const ex = useExampleStore()
+const bs = useBPMSStore()
+const as = useACCStore()
 
-const es = {s: ss,ex: ex}
+const es = {s: ss, b: bs, a: as}
 
 declare module 'vue' {
   interface ComponentCustomProperties {
