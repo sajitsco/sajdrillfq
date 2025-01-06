@@ -16,6 +16,7 @@
       node-key="label"
       :filter="filter"
       default-expand-all
+      :filter-method="myFilterMethod"
       v-model:selected="selected"
     />
     </q-scroll-area>
@@ -47,7 +48,20 @@ const selected = ref(null)
 const showAddTask = defineModel<boolean>({
   required: true,
 });
-const simple= ref([
+
+function myFilterMethod(node: unknown, filter: string): boolean {
+  const filt = filter.toLowerCase()
+  const nd = <TreeItem>node;
+  return nd.label.toLowerCase().indexOf(filt) > -1
+}
+
+interface TreeItem {
+  selectable?: boolean;
+  label: string;
+  children?: TreeItem[];
+}
+
+const simple= ref(<TreeItem[]>[
         {
           selectable: false,
           label: 'Satisfied customers',
@@ -72,4 +86,54 @@ const simple= ref([
       ]);
 const filter = ref('')
 const filterRef = ref(null)
+
+
+
+const list = [
+  {code: '1', label: 'label1', opG: 'Xarid', prG: 'Group1', prtN: 'Part1', prS: 1, ocM: ''},
+  {code: '2', label: 'label2', opG: 'Tolid', prG: 'Group1', prtN: 'Part2', prS: 2, ocM: 'tarash1'},
+  {code: '3', label: 'label3', opG: 'Tolid', prG: 'Group1', prtN: 'Part3', prS: 3, ocM: 'tarash1'},
+  {code: '4', label: 'label4', opG: 'Xarid', prG: 'Group2', prtN: 'Part1', prS: 1, ocM: ''},
+  {code: '5', label: 'label5', opG: 'Tolid', prG: 'Group2', prtN: 'Part2', prS: 2, ocM: 'tarash1'},
+  {code: '6', label: 'label6', opG: 'Tolid', prG: 'Group2', prtN: 'Part3', prS: 3, ocM: 'tarash1'},
+  {code: '7', label: 'label7', opG: 'Xarid', prG: 'Group3', prtN: 'Part1', prS: 1, ocM: ''},
+  {code: '8', label: 'label8', opG: 'Tolid', prG: 'Group3', prtN: 'Part2', prS: 2, ocM: 'tarash1'},
+  {code: '9', label: 'label9', opG: 'Tolid', prG: 'Group3', prtN: 'Part3', prS: 3, ocM: 'tarash1'},
+  {code: '10', label: 'label10', opG: 'Tolid', prG: 'Group4', prtN: 'Part1', prS: 1, ocM: 'tarash2'},
+];
+
+CreateTree();
+
+function CreateTree() {
+  const opG: Record<string, Record<string, TreeItem[]>> = {};
+  for (let index = 0; index < list.length; index++) {
+    const element = list[index];
+    if(element)  {
+      if(!(element.opG in opG)){
+        opG[element.opG] = {};
+      }
+
+      const str1 = element.opG;
+      if(opG[str1] != undefined) {
+        if(!(element.prG in opG[str1])){
+          opG[str1][element.prG] = [];
+        }
+
+        if(element.prG in opG[str1]){
+          opG[str1][element.prG]?.push({label: element.label});
+        }
+      }
+    }
+    
+  }
+  simple.value = [];
+  for (const [key, value] of Object.entries(opG)) {
+    
+    const prGlist: TreeItem[] = [];
+    for (const [k1, v1] of Object.entries(value)) {
+      prGlist.push({selectable: false, label: k1, children: v1})
+    }
+    simple.value.push({selectable: false, label: key, children: prGlist})
+  }
+}
 </script>
