@@ -27,5 +27,6 @@ export enum ATaskStatus{
     children?: TreeItem[];
     icon?: string;
     content?: TaskDef;
+    body?: string;
   }
 

@@ -14,16 +14,13 @@
         >
         <template v-slot:default-header="prop">
         <div class="row items-center">
-          <q-icon :name="prop.node.icon || 'share'" color="orange" size="28px" class="q-mr-sm" />
+          <q-icon :name="prop.node.icon || icons[prop.node.label]" color="orange" size="28px" class="q-mr-sm" />
           <div class="text-weight-bold">{{ prop.node.label }}</div>
         </div>
       </template>
 
-      <template v-slot:default-body="prop">
-        <div v-if="prop.node.story">
-          <span class="text-weight-bold">This node has a story</span>: {{ prop.node.story }}
-        </div>
-        <span v-else class="text-weight-light text-black">{{ prop.node.content?.prtN }}</span>
+      <template v-slot:body-content="prop">
+        <span style="font-size: 16px;">{{ prop.node.content.prtN }}</span>
       </template>
       </q-tree>
       </q-scroll-area>
@@ -73,6 +70,12 @@ const selected = ref(null)
 const showAddTask = defineModel<boolean>({
   required: true,
 })
+
+const icons: Record<string,string> = {
+  Xarid: 'shopping_cart',
+  Tolid: 'factory',
+  vVv: 'dynamic_feed',
+}
 
 function myFilterMethod(node: unknown, filter: string): boolean {
   const filt = filter.toLowerCase()
