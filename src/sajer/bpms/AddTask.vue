@@ -26,6 +26,16 @@
     </q-card>
     <q-page-sticky position="bottom" :offset="[18, 18]">
       <q-toolbar class="bg-primary text-white rounded-borders">
+        <q-btn
+          v-if="selected"
+          round
+          size="large"
+          flat
+          icon="check"
+          @click="showAddTask = false"
+          color="green"
+          class="q-mr-xs"
+        />
         <q-input ref="filterRef" dark dense v-model="filter" class="q-ml-md">
           <template v-slot:prepend>
             <q-icon name="search" />
@@ -41,16 +51,7 @@
           color="red"
           class="q-mr-xs"
         />
-        <q-btn
-          v-if="selected"
-          round
-          size="large"
-          flat
-          icon="check"
-          @click="showAddTask = false"
-          color="green"
-          class="q-mr-xs"
-        />
+        
       </q-toolbar>
     </q-page-sticky>
   </div>

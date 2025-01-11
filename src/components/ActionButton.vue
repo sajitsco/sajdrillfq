@@ -3,7 +3,7 @@
       <q-fab color="accent" icon="keyboard_arrow_up" direction="up">
         <q-btn fab v-if="$router.currentRoute.value.path != '/f/admin' && $s.s.roles.indexOf('ADMIN') > 0" color="primary" @click="$router.push('/f/admin')" icon="admin_panel_settings" />
         <q-btn fab v-if="$router.currentRoute.value.path != '/f/bpms'" color="primary" @click="$router.push('/f/bpms')" icon="task_alt" />
-        <q-btn fab v-if="$router.currentRoute.value.path != '/'" color="secondary" @click="$router.push('/')" icon="home" />
+        <q-btn fab v-if="$router.currentRoute.value.path != '/'" color="primary" @click="$router.push('/')" icon="home" />
       </q-fab>
     </q-page-sticky>
 </template>

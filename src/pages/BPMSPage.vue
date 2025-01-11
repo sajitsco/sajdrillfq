@@ -13,7 +13,7 @@
         </template>
       </div>
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky style="left: auto;" position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="add" color="green-10" @click="showAddTask = true" />
     </q-page-sticky>
     <action-button />

@@ -37,6 +37,7 @@
     "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@quasar/app-vite": "^2.0.0",
     "autoprefixer": "^10.4.2",
+    "postcss-rtlcss": "^5.1.2",
     "typescript": "~5.5.3"
   },
   "engines": {

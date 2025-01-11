@@ -1,7 +1,7 @@
 <template>
   <q-page v-if="$s.s.roles.indexOf('ADMIN') > 0">
     <div class="row">
-      aaa
+      {{ $t('success') }}
     </div>
 <action-button />
   </q-page>

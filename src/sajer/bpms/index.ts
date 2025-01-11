@@ -19,7 +19,7 @@ const list: TaskDef[] = [
   export function CreateTree(): TreeItem[] {
     const simple: TreeItem[]= [];
     const opG: Record<string, Record<string, TreeItem[]>> = {};
-    let cntr = 0;
+    let cntr = 1;
     for (let index = 0; index < list.length; index++) {
       const element = list[index];
       if(element)  {

@@ -1,1 +1,12 @@
 // app global css in SCSS form
+@font-face {
+    font-family: yekan;
+    src: url('assets/fonts/yekan/Yekan.eot');
+    src:
+      url('assets/fonts/yekan/Yekan.woff') format('woff'),
+      url('assets/fonts/yekan/Yekan.ttf') format('ttf');
+  }
+  //----------------------------------------------------------
+  body {
+    font-family: yekan, Verdana, Geneva, Tahoma, sans-serif;
+  }
