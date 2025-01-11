@@ -8,7 +8,6 @@
           :nodes="simple"
           node-key="key"
           :filter="filter"
-          default-expand-all
           :filter-method="myFilterMethod"
           v-model:selected="selected"
         >
@@ -19,9 +18,9 @@
         </div>
       </template>
 
-      <template v-slot:body-content="prop">
+<!--       <template v-slot:body-content="prop">
         <span style="font-size: 16px;">{{ prop.node.content.prtN }}</span>
-      </template>
+      </template> -->
       </q-tree>
       </q-scroll-area>
     </q-card>
