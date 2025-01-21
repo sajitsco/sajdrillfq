@@ -1,9 +1,8 @@
 <template>
   <q-page>
-<action-button />
+index
   </q-page>
 </template>
 
 <script setup lang="ts">
-import ActionButton from 'src/components/ActionButton.vue';
 </script>

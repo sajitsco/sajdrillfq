@@ -10,6 +10,7 @@
           :filter="filter"
           :filter-method="myFilterMethod"
           v-model:selected="selected"
+          default-expand-all
         >
         <template v-slot:default-header="prop">
         <div class="row items-center">

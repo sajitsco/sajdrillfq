@@ -16,14 +16,12 @@
     <q-page-sticky style="left: auto;" position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="add" color="green-10" @click="showAddTask = true" />
     </q-page-sticky>
-    <action-button />
   </q-page>
 </template>
 
 <script setup lang="ts">
 import ATask from "src/sajer/bpms/ATask.vue"
 import ActiveTask from "src/sajer/bpms/ActiveTask.vue"
-import ActionButton from "src/components/ActionButton.vue";
 import AddTask from "src/sajer/bpms/AddTask.vue";
 import { ref } from "vue";
 
