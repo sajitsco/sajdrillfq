@@ -10,17 +10,16 @@
           :filter="filter"
           :filter-method="myFilterMethod"
           v-model:selected="selected"
-          default-expand-all
         >
         <template v-slot:default-header="prop">
-        <div class="row items-center">
+        <div class="row items-center" @click="onItemClicked(prop.node)">
           <q-icon :name="prop.node.icon || icons[prop.node.label]" color="orange" size="28px" class="q-mr-sm" />
           <div class="text-weight-bold">{{ prop.node.label }}</div>
         </div>
       </template>
 
-<!--       <template v-slot:body-content="prop">
-        <span style="font-size: 16px;">{{ prop.node.content.prtN }}</span>
+<!-- <template v-slot:default-body="prop">
+  
       </template> -->
       </q-tree>
       </q-scroll-area>
@@ -34,6 +33,15 @@
           flat
           icon="check"
           @click="showAddTask = false"
+          color="green"
+          class="q-mr-xs"
+        />
+        <q-btn
+          round
+          size="large"
+          flat
+          icon="add"
+          @click="addNewNode()"
           color="green"
           class="q-mr-xs"
         />
@@ -65,8 +73,9 @@ import type { TreeItem } from './entities'
 import { CreateTree } from '.'
 
 const tr = ref(<QTree>(<unknown>null))
-
+const simple = ref(CreateTree())
 const selected = ref(null)
+const clicked = ref(<TreeItem>(<unknown>null))
 
 const showAddTask = defineModel<boolean>({
   required: true,
@@ -91,7 +100,38 @@ function myFilterMethod(node: unknown, filter: string): boolean {
   return nd.label.toLowerCase().indexOf(filt) > -1 || bol1
 }
 
-const simple = ref(CreateTree())
+
 const filter = ref('')
 const filterRef = ref(null)
+
+function rnd1(min: number, max: number) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function addNewNode(){
+  if(clicked.value){
+    const node = clicked.value;
+    let icn = 'extension';
+    if(node.type == 2) {
+      icn = 'work_history';
+    }
+    
+    const newNode: TreeItem = {selectable: false, label: 'asdfg'+rnd1(100,200).toString(), key: rnd1(100,200), children: [], parent: node, type: node.type+1, icon: icn};
+    //const newNewItem: TreeItem = {selectable: false, label: 'new item', key: rnd1(100,200), parent: newNode};
+    //const newNewItem2: TreeItem = {selectable: false, label: 'new item'+rnd1(100,200).toString(), key: rnd1(100,200)};
+    //if(newNode[0]){
+      //newNode.children?.push(newNewItem);
+    //  newNode[0].children?.push(newNewItem2);
+node.children?.splice(node.children?.length,0, newNode);
+    //}    
+  }  else {
+    simple.value.push({selectable: false, label: 'asdfg'+rnd1(100,200).toString(), key: rnd1(100,200), children: [], icon: 'add', type: 1});
+  }
+
+}
+
+function onItemClicked(node: TreeItem){
+  console.log(node.type);
+  clicked.value = node;
+}
 </script>
