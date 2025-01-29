@@ -14,10 +14,6 @@
         </q-card-section>
         <q-separator />
         <q-card-section>
-          <accounts-tree />
-        </q-card-section>
-        <q-separator />
-        <q-card-section>
           {{ atask.duration }}
         </q-card-section>
         <q-separator />
@@ -33,7 +29,6 @@
 <script setup lang="ts">
 import type { ATask } from './entities';
 import { ATaskStatus } from './entities';
-import AccountsTree from 'src/sajer/acc/AccountsTree.vue'
 import { ref } from 'vue';
 
 const expanded = ref(false);
