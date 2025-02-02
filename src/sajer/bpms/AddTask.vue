@@ -37,7 +37,7 @@
           size="large"
           flat
           icon="check"
-          @click="showAddTask = false"
+          @click="newActiveTask()"
           color="green"
           class="q-mr-xs"
         />
@@ -76,6 +76,7 @@ import { QTree } from 'quasar'
 import { ref } from 'vue'
 import type { TreeItem } from './entities'
 import { CreateTree } from '.'
+import { es } from 'src/boot/sajer';
 
 const tr = ref(<QTree>(<unknown>null))
 const simple = ref(CreateTree())
@@ -90,6 +91,16 @@ const icons: Record<string,string> = {
   Xarid: 'shopping_cart',
   Tolid: 'factory',
   vVv: 'dynamic_feed',
+}
+
+async function newActiveTask(){
+  if(selected.value){
+    const strData = tr.value.getNodeByKey(selected.value);
+    console.log(strData);
+    await es.b.newATask(strData);
+  showAddTask.value = false;
+  }
+  
 }
 
 function myFilterMethod(node: unknown, filter: string): boolean {

@@ -8,6 +8,8 @@ export enum ATaskStatus{
     duration: number;
     id: string;
     status: ATaskStatus;
+    description: string;
+    task: Task;
   }
 
   export interface TaskDef {
@@ -26,9 +28,17 @@ export enum ATaskStatus{
     key: number;
     children?: TreeItem[];
     icon?: string;
-    content?: TaskDef;
+    content?: Task;
     body?: string;
     parent?: TreeItem;
     type: number;
+  }
+
+  export interface Task {
+    id: string;
+    code: number;
+    name: string;
+    grp: string;
+    subgroup: string;
   }
 

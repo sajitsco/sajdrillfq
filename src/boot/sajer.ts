@@ -7,7 +7,7 @@ const ss = useSajerStore()
 const bs = useBPMSStore()
 const as = useACCStore()
 
-const es = {s: ss, b: bs, a: as}
+const es = { s: ss, b: bs, a: as }
 
 declare module 'vue' {
   interface ComponentCustomProperties {
@@ -17,6 +17,7 @@ declare module 'vue' {
 
 export default defineBoot(({ app }) => {
   app.config.globalProperties.$s = es
+  
 })
 
 export { es }

@@ -50,6 +50,7 @@ export const useSajerStore = defineStore('sajer', {
           api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data
           this.loggedIn = true
           uBPMS.getATasks();
+          uBPMS.getTasks();
           uACC.getAccounts();
           this.roles = jwt.roles;
           if(jwt.roles == "ROLE_ADMIN"){
@@ -57,6 +58,7 @@ export const useSajerStore = defineStore('sajer', {
           } else {
             this.router.push("/f/bpms")
           }
+          window.localStorage.setItem("role",this.roles);
         })
         .catch((err) => {
           this.loggedIn = false

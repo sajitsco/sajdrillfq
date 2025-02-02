@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { ATaskStatus } from './entities'
-import type { ATask } from './entities'
+import type { ATask, Task } from './entities'
 import { api } from 'src/boot/axios'
 
 
@@ -8,9 +8,20 @@ export const useBPMSStore = defineStore('bpms', {
   state: () => ({
         activeTask: <ATask><unknown>null,
         atasks: <ATask[]>[],
+        tasks: <Task[]>[],
   }),
 
   actions: {
+    getTasks() {
+      api
+    .get<Task[]>('/s/bpms/task')
+    .then((res) => {
+      this.tasks = res.data
+    })
+    .catch(() => {
+      this.atasks = []
+    })
+    },
     getATasks() {
       api
     .get<ATask[]>('/s/bpms/atask')
@@ -29,6 +40,7 @@ export const useBPMSStore = defineStore('bpms', {
     })
     },
     async updateATasks(atask: ATask) {
+      console.log(atask);
       await api
     .put('/s/bpms/atask',atask)
     .then(() => {
@@ -39,13 +51,13 @@ export const useBPMSStore = defineStore('bpms', {
       console.log(err);
     })
     },
-    async newATask() {
+    async newATask(data: unknown) {
       if( this.activeTask != null){
         alert("There is an active Task")
         return;
       }
       await api
-    .post<ATask>('/s/bpms/atask')
+    .post<ATask>('/s/bpms/atask',data)
     .then((res) => {
       console.log(res);
       this.activeTask = res.data;

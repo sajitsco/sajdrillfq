@@ -1,40 +1,28 @@
-import type { TaskDef, TreeItem } from "./entities";
+import { useBPMSStore } from "./bpms-store";
+import type { TreeItem } from "./entities";
 
-const list: TaskDef[] = [
-    {code: '12', label: 'label12', opG: 'vVv', prG: '', prtN: 'Part1', prS: 0, ocM: ''},
-    {code: '11', label: 'label11', opG: 'vVv', prG: 'Group1', prtN: 'Part1', prS: 0, ocM: ''},
-    {code: '0', label: 'label13', opG: 'Xarid', prG: '', prtN: 'Part1', prS: 0, ocM: ''},
-    {code: '1', label: 'label1', opG: 'Xarid', prG: 'Group1', prtN: 'Part1', prS: 1, ocM: ''},
-    {code: '2', label: 'label2', opG: 'Tolid', prG: 'Group1', prtN: 'Part2', prS: 2, ocM: 'tarash1'},
-    {code: '3', label: 'label3', opG: 'Tolid', prG: 'Group1', prtN: 'Part3', prS: 3, ocM: 'tarash1'},
-    {code: '4', label: 'label2', opG: 'Xarid', prG: 'Group2', prtN: 'Part1', prS: 1, ocM: ''},
-    {code: '5', label: 'label5', opG: 'Tolid', prG: 'Group2', prtN: 'Part2', prS: 2, ocM: 'tarash1'},
-    {code: '6', label: 'label6', opG: 'Tolid', prG: 'Group2', prtN: 'Part3', prS: 3, ocM: 'tarash1'},
-    {code: '7', label: 'label7', opG: 'Xarid', prG: 'Group3', prtN: 'Part1', prS: 1, ocM: ''},
-    {code: '8', label: 'label8', opG: 'Tolid', prG: 'Group3', prtN: 'Part2', prS: 2, ocM: 'tarash1'},
-    {code: '9', label: 'label9', opG: 'Tolid', prG: 'Group3', prtN: 'Part3', prS: 3, ocM: 'tarash1'},
-    {code: '10', label: 'label10', opG: 'Tolid', prG: 'Group4', prtN: 'Part1', prS: 1, ocM: 'tarash2'},
-  ];
+  const uBPMS = useBPMSStore();
 
   export function CreateTree(): TreeItem[] {
     const simple: TreeItem[]= [];
     const opG: Record<string, Record<string, TreeItem[]>> = {};
     let cntr = 1;
-    for (let index = 0; index < list.length; index++) {
-      const element = list[index];
+
+    for (let index = 0; index < uBPMS.tasks.length; index++) {
+      const element = uBPMS.tasks[index];
       if(element)  {
-        if(!(element.opG in opG)){
-          opG[element.opG] = {};
+        if(!(element.grp in opG)){
+          opG[element.grp] = {};
         }
   
-        const str1 = element.opG;
+        const str1 = element.grp;
         if(opG[str1] != undefined) {
-          if(!(element.prG in opG[str1])){
-            opG[str1][element.prG] = [];
+          if(!(element.subgroup in opG[str1])){
+            opG[str1][element.subgroup] = [];
           }
   
-          if(element.prG in opG[str1]){
-            opG[str1][element.prG]?.push({label: element.label, key: cntr++, content: element, icon: 'work_history', body: 'content', type: 3});
+          if(element.subgroup in opG[str1]){
+            opG[str1][element.subgroup]?.push({label: element.name, key: cntr++, content: element, icon: 'work_history', body: 'content', type: 3});
           }
         }
       }
