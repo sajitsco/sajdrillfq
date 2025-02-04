@@ -2,7 +2,7 @@
   <q-card :style="atask.status == ATaskStatus.PAUSED?{backgroundColor: 'grey'}:{backgroundColor: 'aquamarine'}" class="q-ma-sm, q-pa-sm">
   <q-btn v-if="atask.status == ATaskStatus.PAUSED" round color="grey" icon="play_arrow" @click="do1()" />
   <q-btn v-if="atask.status == ATaskStatus.ACTIVE" round color="secondary" icon="pause" @click="do2()" />
-    {{ atask.status }}    
+  <span style="padding: 6px;">{{ atask.task.grp }}>{{ atask.task.subgroup }}>{{ atask.task.name }}</span>:<span style="padding: 6px;">{{ atask.description }}</span>
   </q-card>
 
 </template>

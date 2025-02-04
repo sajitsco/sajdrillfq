@@ -26,7 +26,7 @@
               <div
                 v-if="prop.node.type > 0"
                 class="text-weight-bold"
-                @dblclick="prop.node.type = -prop.node.type"
+                @dblclick="editNodeItem(prop.node)"
               >
                 {{ prop.node.label }}
               </div>
@@ -35,7 +35,7 @@
                   <template v-slot:append>
                     <q-icon
                       name="check"
-                      @click="prop.node.type = -prop.node.type"
+                      @click="prop.node.type = -prop.node.type;"
                       class="cursor-pointer"
                     />
                   </template>
@@ -124,6 +124,16 @@ async function newActiveTask() {
   }
 }
 
+function editNodeItem(node: TreeItem){
+  node.type = -node.type;
+  node.selectable = true;
+  if(node.content){
+    node.content.name = node.label;
+    node.content.subgroup = node.parent?node.parent.label:"زیر گروه";
+    node.content.grp = node.parent?.parent?node.parent?.parent.label:"گروه";
+  }
+}
+
 function myFilterMethod(node: unknown, filter: string): boolean {
   const filt = filter.toLowerCase()
   const nd = <TreeItem>node
@@ -150,12 +160,13 @@ function addNewNode() {
     const node = clicked.value
     if (node.type == 2) {
       const newNode: TreeItem = {
-        selectable: true,
+        selectable: false,
         label: 'عملیات',
         key: rnd1(100, 200),
         parent: node,
         type: -3,
         icon: 'work_history',
+        content: {id: "", code: 6, name: "عملیات", grp: node.parent?node.parent.label:"", subgroup: node.label},
       }
       node.children?.splice(node.children?.length, 0, newNode)
     } else if (node.type == 1) {
