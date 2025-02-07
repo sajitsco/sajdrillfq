@@ -10,16 +10,17 @@ export enum ATaskStatus{
     status: ATaskStatus;
     description: string;
     task: Task;
+    inpts: Resource[];
+    otpts: Resource[];
   }
 
-  export interface TaskDef {
-    code: string;
-    label: string;
-    opG: string;
-    prG: string;
-    prtN: string;
-    prS: number;
-    ocM: string;
+  export interface Resource{
+    type: string;
+    countable: boolean;
+    title: string;
+    id: string;
+    data: unknown;
+    count: number;
   }
 
   export interface TreeItem {
@@ -40,5 +41,10 @@ export enum ATaskStatus{
     name: string;
     grp: string;
     subgroup: string;
+  }
+
+  export interface Files {
+    id: string;
+    name: string;
   }
 

@@ -57,6 +57,8 @@ export const useBPMSStore = defineStore('bpms', {
         status: ATaskStatus.ACTIVE,
         task: task,
         description: '',
+        inpts: [],
+        otpts: [],
       }
       if (this.activeTask != null) {
         alert('There is an active Task')

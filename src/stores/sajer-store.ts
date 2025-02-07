@@ -53,11 +53,11 @@ export const useSajerStore = defineStore('sajer', {
           uBPMS.getTasks();
           uACC.getAccounts();
           this.roles = jwt.roles;
-          if(jwt.roles == "ROLE_ADMIN"){
-            this.router.push("/f/admin");
-          } else {
+          //if(jwt.roles == "ROLE_ADMIN"){
+            //this.router.push("/f/admin");
+          //} else {
             this.router.push("/f/bpms")
-          }
+          //}
           window.localStorage.setItem("role",this.roles);
         })
         .catch((err) => {
