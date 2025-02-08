@@ -1,7 +1,7 @@
 <template>
   <q-card bordered :style="atask.status == ATaskStatus.PAUSED
-      ? { backgroundColor: 'grey' }
-      : { backgroundColor: 'aquamarine' }
+    ? { backgroundColor: 'grey' }
+    : { backgroundColor: 'aquamarine' }
     " class="q-ma-xs, q-pa-xs">
     <q-card-actions>
       <q-btn v-if="atask.status == ATaskStatus.ACTIVE" round color="secondary" icon="pause" @click="
@@ -19,7 +19,7 @@
           <q-input v-model="atask.description" label="توضیحات" />
         </q-card-section>
         <q-card-section>
-<resource-list :bg-color="'#FFBBBB'" :model-value="atask.inpts" />
+          <resource-list :bg-color="'#FFBBBB'" :model-value="atask.inpts" />
         </q-card-section>
         <q-separator />
         <q-card-section>
@@ -48,6 +48,6 @@ const atask = defineModel<ATask>({
   required: true,
 })
 
-if(!atask.value.inpts) atask.value.inpts = [];
-if(!atask.value.otpts) atask.value.otpts = [];
+if (!atask.value.inpts) atask.value.inpts = [];
+if (!atask.value.otpts) atask.value.otpts = [];
 </script>

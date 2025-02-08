@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <ed-view :data="simple" />
     <add-task v-model="showAddTask" v-if="showAddTask" />
     <div class="row">
       <div style="width: 100%; background-color: cornflowerblue;" class="q-ma-xs, q-pa-xs">
@@ -23,8 +24,12 @@
 import ATask from "src/sajer/bpms/ATask.vue"
 import ActiveTask from "src/sajer/bpms/ActiveTask.vue"
 import AddTask from "src/sajer/bpms/AddTask.vue";
+import EdView from "./EdView.vue";
 import { ref } from "vue";
+import { CreateTree } from "src/sajer/bpms";
 
 const showAddTask = ref(false);
+const simple = ref(CreateTree())
+console.log(simple.value);
 
 </script>

@@ -3,38 +3,35 @@
     <q-card class="q-pa-sm fixed-center" style="max-width: 500px; width: 99%; height: 99%">
       <q-scroll-area style="height: 100%;">
         <div style="text-align: center;">
-          <q-btn-toggle
-        v-model="model"
-        push
-        rounded
-        glossy
-        toggle-color="purple"
-        :options="[
-          {value: 'product', slot: 'product'},
-          {value: 'file', slot: 'file'}
-        ]"
-      >
-        <template v-slot:product>
-          <div class="row items-center no-wrap">
-            <div class="text-center">
-              انتخاب<br>محصول
-            </div>
-            <q-icon right name="settings" />
-          </div>
-        </template>
+          <q-btn-toggle v-model="model" push rounded glossy toggle-color="purple" :options="[
+            { value: 'product', slot: 'product' },
+            { value: 'file', slot: 'file' }
+          ]">
+            <template v-slot:product>
+              <div class="row items-center no-wrap">
+                <div class="text-center">
+                  انتخاب<br>محصول
+                </div>
+                <q-icon right name="settings" />
+              </div>
+            </template>
 
-        <template v-slot:file>
-          <div class="row items-center no-wrap">
-            <div class="text-center">
-              انتخاب<br>فایل
-            </div>
-            <q-icon right name="file_present" />
-          </div>
-        </template>
-      </q-btn-toggle></div>
-<div v-if="model == 'file'" style="padding: 10px;"><q-btn round icon="file_present" color="green" @click="func1()" style="margin-left: 10px" /></div>
-<div v-if="model == 'product'" style="padding: 10px;"><q-btn round size="large" flat icon="check" @click="res={type: 'asdf',id: (cnt++).toString(), countable: true, data: {}, title: 'title1', count: 1}" color="green" class="q-mr-xs" /></div>
-        </q-scroll-area>
+            <template v-slot:file>
+              <div class="row items-center no-wrap">
+                <div class="text-center">
+                  انتخاب<br>فایل
+                </div>
+                <q-icon right name="file_present" />
+              </div>
+            </template>
+          </q-btn-toggle>
+        </div>
+        <div v-if="model == 'file'" style="padding: 10px;"><q-btn round icon="file_present" color="green"
+            @click="func1()" style="margin-left: 10px" /></div>
+        <div v-if="model == 'product'" style="padding: 10px;"><q-btn round size="large" flat icon="check"
+            @click="res = { type: 'asdf', id: (cnt++).toString(), countable: true, data: {}, title: 'title1', count: 1 }"
+            color="green" class="q-mr-xs" /></div>
+      </q-scroll-area>
     </q-card>
     <q-page-sticky position="bottom" :offset="[18, 18]">
       <q-toolbar class="bg-primary text-white rounded-borders">
@@ -56,7 +53,7 @@ const model = ref("file");
 const res = ref(<Resource><unknown>null)
 const cnt = ref(0);
 
-  const emit = defineEmits({
+const emit = defineEmits({
   // No validation
   cancel: null,
 
@@ -68,23 +65,23 @@ const showPopup = ref(false);
 
 function onOk() {
   showPopup.value = false;
-  emit('ok',res.value);
+  emit('ok', res.value);
 }
 
-function show(){
+function show() {
   res.value = <Resource><unknown>null;
   showPopup.value = true;
 }
 
-function hide(){
+function hide() {
   showPopup.value = false;
 }
 
 defineExpose({
-      show,hide
-    })
+  show, hide
+})
 
-    function func1() {
+function func1() {
   const i1 = document.createElement('input')
   i1.type = 'file'
   i1.addEventListener('change', onChange)
@@ -104,9 +101,9 @@ function onChange(event: Event): void {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }).then((rs)=>{
+      }).then((rs) => {
         console.log(rs.data.id);
-        res.value={type: 'file',id: (cnt.value++).toString(), countable: false, data: {}, title: rs.data.name, count: 1};
+        res.value = { type: 'file', id: (cnt.value++).toString(), countable: false, data: {}, title: rs.data.name, count: 1 };
       })
     }
   }
