@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { QTree } from 'quasar'
 import { ref } from 'vue'
-import type { TreeItem } from './entities'
+import type { Task, TreeItem } from './entities'
 import { CreateTree } from '.'
 import { es } from 'src/boot/sajer'
 
@@ -118,7 +118,7 @@ async function newActiveTask() {
     const strData = <TreeItem>tr.value.getNodeByKey(selected.value)
     console.log(strData.content)
     if (strData?.content) {
-      await es.b.newATask(strData.content)
+      await es.b.newATask(<Task>strData.content)
     }
     showAddTask.value = false
   }
@@ -128,9 +128,14 @@ function editNodeItem(node: TreeItem){
   node.type = -node.type;
   node.selectable = true;
   if(node.content){
-    node.content.name = node.label;
-    node.content.subgroup = node.parent?node.parent.label:"زیر گروه";
-    node.content.grp = node.parent?.parent?node.parent?.parent.label:"گروه";
+    const task = <Task>node.content;
+    task.name = node.label?node.label:"label";
+    if(node.parent){
+      task.subgroup = node.parent.label?node.parent.label:"زیر گروه";
+      if(node.parent.parent?.label)
+      task.grp = node.parent.parent?.label;
+    }
+    
   }
 }
 
@@ -144,7 +149,10 @@ function myFilterMethod(node: unknown, filter: string): boolean {
     const result = jnc.replace(re, '')
     bol1 = result.toLowerCase().indexOf(filt) > -1
   }
+  if(nd.label)
   return nd.label.toLowerCase().indexOf(filt) > -1 || bol1
+else
+  return bol1
 }
 
 const filter = ref('')
@@ -165,6 +173,7 @@ function addNewNode() {
         key: rnd1(100, 200),
         parent: node,
         type: -3,
+        level: 3,
         icon: 'work_history',
         content: {id: "", code: 6, name: "عملیات", grp: node.parent?node.parent.label:"", subgroup: node.label},
       }
@@ -178,6 +187,7 @@ function addNewNode() {
         parent: node,
         type: -2,
         icon: 'extension',
+        level: 2
       }
       node.children?.splice(node.children?.length, 0, newNode)
       clicked.value = newNode
@@ -190,6 +200,7 @@ function addNewNode() {
       children: [],
       icon: 'add',
       type: -1,
+      level: 1
     }
     simple.value.push(newNode)
     clicked.value = newNode

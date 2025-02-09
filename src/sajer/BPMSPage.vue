@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <ed-view :data="simple" />
+    <ed-view :data="simple" :max-level="3" />
     <add-task v-model="showAddTask" v-if="showAddTask" />
     <div class="row">
       <div style="width: 100%; background-color: cornflowerblue;" class="q-ma-xs, q-pa-xs">

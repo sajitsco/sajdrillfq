@@ -1,3 +1,5 @@
+import type { QTreeNode } from "quasar";
+
 export enum ATaskStatus{
     ACTIVE = "ACTIVE",
     PAUSED = "PAUSED",
@@ -23,16 +25,13 @@ export enum ATaskStatus{
     count: number;
   }
 
-  export interface TreeItem {
-    selectable?: boolean;
-    label: string;
+  export interface TreeItem extends QTreeNode{
     key: number;
-    children?: TreeItem[];
     icon?: string;
-    content?: Task;
-    body?: string;
+    content?: unknown;
     parent?: TreeItem;
     type: number;
+    level: number;
   }
 
   export interface Task {

@@ -22,7 +22,7 @@ import type { TreeItem } from "./entities";
           }
   
           if(element.subgroup in opG[str1]){
-            opG[str1][element.subgroup]?.push({label: element.name, key: cntr++, content: element, icon: 'work_history', body: 'content', type: 3});
+            opG[str1][element.subgroup]?.push({label: element.name, key: cntr++, content: element, icon: 'work_history', body: 'content', type: 3, level: 3});
           }
         }
       }
@@ -37,13 +37,13 @@ import type { TreeItem } from "./entities";
         } else
         {
           //v1.push({selectable: false, label: 'new item', key: cntr++, parent: v1});
-          prGlist.push({selectable: false, label: k1, children: v1, key: cntr++, icon: 'extension', type: 2})
+          prGlist.push({selectable: false, label: k1, children: v1, key: cntr++, icon: 'extension', type: 2, level: 2})
         }
         
       }
       if( key != ''){
         //prGlist.push({selectable: false, label: 'new item', key: cntr++, parent: prGlist})
-        simple.push({selectable: false, label: key, children: prGlist, key: cntr++, type: 1})
+        simple.push({selectable: false, label: key, children: prGlist, key: cntr++, type: 1, level: 1})
       }
     }
     //simple.push({selectable: false, label: 'new item', key: cntr++, parent: simple})
