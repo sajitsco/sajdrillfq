@@ -19,11 +19,11 @@
           <q-input v-model="atask.description" label="توضیحات" />
         </q-card-section>
         <q-card-section>
-          <resource-list :bg-color="'#FFBBBB'" :model-value="atask.inpts" />
+          <resource-list :bg-color="'#FFBBBB'" :model-value="atask.inpts" title="مصارف ورودی" />
         </q-card-section>
         <q-separator />
         <q-card-section>
-          <resource-list :bg-color="'#BBFFBB'" :model-value="atask.otpts" />
+          <resource-list :bg-color="'#BBFFBB'" :model-value="atask.otpts" title="محصولات خروجی" />
         </q-card-section>
         <q-separator />
         <q-card-actions>

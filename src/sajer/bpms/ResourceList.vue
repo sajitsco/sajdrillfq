@@ -4,7 +4,7 @@
     <q-card-section class="q-pt-xs">
       <q-btn round icon="add" color="green" @click="showPopUp()" /><span
         style="margin: 10px; font-size: 18px; font-weight: bolder"
-        >مصارف ورودی</span
+        >{{ title }}</span
       >
       <hr />
       <div>
@@ -43,6 +43,7 @@ const list = defineModel<Resource[]>({
 })
 
 defineProps<{
-    bgColor: string
+    bgColor: string,
+    title: string
 }>()
 </script>

@@ -1,8 +1,9 @@
 <template>
   <div v-show="showPopup" style="position: absolute; width: 100%; height: 100%; background-color: gray; z-index: 11">
     <q-card class="q-pa-sm fixed-center" style="max-width: 500px; width: 99%; height: 99%">
-      <q-scroll-area style="height: 100%;">
-        <div style="text-align: center;">
+      <div style="height: 100%;display: grid;grid-template-rows: max-content auto max-content;">
+        <div>
+          <div style="text-align: center;">
           <q-btn-toggle v-model="model" push rounded glossy toggle-color="purple" :options="[
             { value: 'product', slot: 'product' },
             { value: 'file', slot: 'file' }
@@ -25,21 +26,24 @@
               </div>
             </template>
           </q-btn-toggle>
-        </div>
+        </div></div>
+<div style="padding: 5px;">
         <div v-if="model == 'file'" style="padding: 10px;"><q-btn round icon="file_present" color="green"
             @click="func1()" style="margin-left: 10px" /></div>
-        <div v-if="model == 'product'" style="padding: 10px;"><q-btn round size="large" flat icon="check"
+        <!-- <div v-if="model == 'product'" style="padding: 10px;height:100%;border: 1px red dotted;"> -->
+          <!-- <q-btn round size="large" flat icon="check"
             @click="res = { type: 'asdf', id: (cnt++).toString(), countable: true, data: {}, title: 'title1', count: 1 }"
-            color="green" class="q-mr-xs" /></div>
-      </q-scroll-area>
-    </q-card>
-    <q-page-sticky position="bottom" :offset="[18, 18]">
-      <q-toolbar class="bg-primary text-white rounded-borders">
+            color="green" class="q-mr-xs" /> -->
+            <ed-view v-if="model == 'product'" :data="simple" :max-level="3" @ok="onAddTask" @cancel="console.log('cancel')" />
+          <!-- </div>   -->
+</div>
+<div><q-toolbar class="bg-primary text-white rounded-borders">
         <q-btn v-if="res" round size="large" flat icon="check" @click="onOk()" color="green" class="q-mr-xs" />
         <q-space />
         <q-btn round size="large" flat icon="close" @click="$emit('cancel')" color="red" class="q-mr-xs" />
-      </q-toolbar>
-    </q-page-sticky>
+      </q-toolbar></div>
+        </div>
+    </q-card>
   </div>
 </template>
 
@@ -47,7 +51,8 @@
 import { ref } from 'vue';
 import type { Files, Resource } from './entities';
 import { api } from 'src/boot/axios';
-
+import { CreateTree } from '.';
+import EdView from '../EdView.vue';
 const model = ref("file");
 
 const res = ref(<Resource><unknown>null)
@@ -107,5 +112,10 @@ function onChange(event: Event): void {
       })
     }
   }
+}
+
+const simple = ref(CreateTree())
+function onAddTask(dt: unknown) {
+  console.log(dt);
 }
 </script>
