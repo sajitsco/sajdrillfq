@@ -27,10 +27,8 @@ export enum ATaskStatus{
 
   export interface TreeItem extends QTreeNode{
     key: number;
-    icon?: string;
     content?: unknown;
     parent?: TreeItem;
-    type: number;
     level: number;
   }
 

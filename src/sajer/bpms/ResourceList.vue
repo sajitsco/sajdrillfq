@@ -35,6 +35,7 @@ function showPopUp() {
   popup1.value.show()
 }
 function onOK(res: Resource) {
+  console.log(res);
   list.value.push(res)
 }
 

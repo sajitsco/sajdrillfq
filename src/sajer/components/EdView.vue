@@ -2,7 +2,7 @@
   <div style="height: 100%;display: grid; grid-template-rows: auto max-content;">
     <q-scroll-area>
       <q-tree ref="tr" style="font-size: 28px" selected-color="green-9" :nodes="data" node-key="key" v-model:selected="selected" :filter="filter"
-      :filter-method="myFilterMethod">
+      :filter-method="myFilterMethod" @update:selected="onSelect">
       <template v-slot:default-header="prop">
         <div v-if="prop.node.key > 0" class="row items-center mjitem">
           <div class="text-weight-bold">
@@ -10,7 +10,7 @@
               @click="addNewItem(prop.node)" />
           </div>
         </div>
-        <div v-else @keypress.stop>
+        <div v-else @keypress.stop @click.stop>
           <q-input bottom-slots v-model="prop.node.label" label="Label" dense @click.stop>
             <template v-slot:append>
               <q-icon name="check" @click="checkInItem(prop.node)" class="cursor-pointer" />
@@ -20,18 +20,16 @@
         </div>
       </template>
     </q-tree>
-    <q-btn style="margin: 10px;" icon="add" @click="addNewItem(<TreeItem><unknown>null)" />
 
     </q-scroll-area>
   <div>
-    <q-toolbar class="bg-primary text-white rounded-borders">
+    <q-toolbar class="text-white rounded-borders" style="background-color: darkblue;">
         <q-btn
-         v-if="selected"
           round
           size="large"
           flat
-          icon="check"
-          @click="onOK"
+          icon="add"
+          @click="addNewItem(<TreeItem><unknown>null)"
           color="green"
           class="q-mr-xs"
         />
@@ -40,16 +38,6 @@
             <q-icon name="search" />
           </template>
         </q-input>
-        <q-space />
-        <q-btn
-          round
-          size="large"
-          flat
-          icon="close"
-          @click="$emit('cancel')"
-          color="red"
-          class="q-mr-xs"
-        />
       </q-toolbar>
   </div>
   </div>
@@ -58,13 +46,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { TreeItem } from './bpms/entities';
+import type { TreeItem } from '../bpms/entities';
 import type { QTree } from 'quasar';
 const props = defineProps<{
   data: TreeItem[],
   maxLevel: number,
+  newItem: (node: TreeItem) => unknown;
 }>()
 
+const model = defineModel();
 const selected = ref(null)
 const filter = ref('')
 const isInEditMode = ref(false);
@@ -72,19 +62,17 @@ let cntr = 100;
 let selectedParent: TreeItem = <TreeItem><unknown>null;
 
 function addNewItem(node: TreeItem) {
+  const cntnt = props.newItem(node);
   if (node == null) {
     selectedParent = <TreeItem><unknown>null;
     // eslint-disable-next-line vue/no-mutating-props
-    props.data.push({ label: "new Item", children: [], key: -1, icon: 'check', level: 1, type: 1, selectable: false });
+    props.data.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: 1, type: 1, selectable: false, content: cntnt });
   } else {
     selectedParent = node;
   isInEditMode.value = true;
-  node.children?.push({ label: "new Item", children: [], key: -1, icon: 'check', level: node.level + 1, selectable:node.level==(props.maxLevel-1)?true:false });
+  node.children?.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: node.level + 1, selectable:node.level==(props.maxLevel-1)?true:false, content: cntnt });
   }
-  
 }
-
-
 
 function checkInItem(node: TreeItem) {
   isInEditMode.value = false;
@@ -101,19 +89,8 @@ function deleteItem() {
     delete selectedParent.children[selectedParent.children?.length - 1];
 }
 
-const emit = defineEmits({
-  cancel: null,
-  ok: null,
-})
-
 const tr = ref(<QTree>(<unknown>null));
-function onOK() {
-  if (selected.value) {
-    const strData = tr.value.getNodeByKey(selected.value);
-    emit('ok', strData);
-  }
-  
-}
+
 
 function myFilterMethod(node: unknown, filter: string): boolean {
   const filt = filter.toLowerCase()
@@ -129,5 +106,14 @@ function myFilterMethod(node: unknown, filter: string): boolean {
   return nd.label.toLowerCase().indexOf(filt) > -1 || bol1
 else
   return bol1
+}
+
+function onSelect(){
+  if (selected.value) {
+    const strData = tr.value.getNodeByKey(selected.value);
+    model.value = strData.content;
+  } else {
+    model.value = null;
+  }
 }
 </script>

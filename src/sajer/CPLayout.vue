@@ -51,8 +51,8 @@
 
 <script setup lang="ts">
 import { es } from 'src/boot/sajer'
-import login from 'src/sajer/Log-In.vue'
-import ActionButton from 'src/sajer/ActionButton.vue';
+import login from './components/Log-In.vue'
+import ActionButton from 'src/sajer/components/ActionButton.vue';
 es.s.connect()
 setInterval(() => es.s.connect(), 60000)
 </script>

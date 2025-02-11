@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { Resource } from './bpms/entities';
+import type { Resource } from '../bpms/entities';
 
 const res = ref(<Resource><unknown>null)
 
