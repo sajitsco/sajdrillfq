@@ -1,37 +1,52 @@
 <template>
-  <div style="position: absolute; width: 100%; height: 100%; background-color: gray; z-index: 11" @click="$emit('hide')">
-    <q-card class="q-pa-sm fixed-center" style="max-width: 500px; width: 99%; height: 99%" @click.stop>
       <div style="height: 100%;display: grid;grid-template-rows: auto max-content;">
-      <ed-view :new-item="newTaskItem" style="padding: 5px;" v-model="task" :data="simple" :max-level="3" />
+      <ed-view :edit-item="editTaskItem" :new-item="newTaskItem" style="padding: 5px;" v-model="task" :data="simple" :max-level="3" />
       <div><q-toolbar class="bg-primary text-white rounded-borders">
         <q-btn v-if="task" round size="large" flat icon="check" @click="onAddTask" color="green" class="q-mr-xs" />
         <q-space />
-        <q-btn round size="large" flat icon="close" @click="$emit('hide')" color="red" class="q-mr-xs" />
+        <q-btn round size="large" flat icon="close" @click="$emit('cancel')" color="red" class="q-mr-xs" />
       </q-toolbar></div>        
       </div>
-
-    </q-card>
-  </div>
 </template>
 
 <script setup lang="ts">
 import EdView from "../components/EdView.vue";
 import { ref } from "vue";
-import type { TreeItem } from "./entities";
+import type { Task, TreeItem } from "./entities";
 import { useBPMSStore } from "./bpms-store";
 
 const task = ref(null)
-function onAddTask(dt: unknown) {
-  console.log(dt);
-  emit('hide');
+function onAddTask() {
+  console.log(task.value);
+  emit('ok');
 }
 
 const emit = defineEmits({
-  hide: null
+  ok: null,
+  cancel: null,
 })
 
-function newTaskItem(){
-  return {name: "Task1"};
+function newTaskItem(node: TreeItem){
+  const content: Task = {id: "",name: "جدید", code: 0, subgroup: "", grp: ""};
+  if(node){
+  if(node.level == 1){
+    content.grp = node.label?node.label:"unknown"
+  }
+  if(node.level == 2){
+    content.subgroup = node.label?node.label:"unknown";
+    if(node.content){
+      const tsk = <Task>node.content;
+      content.grp = tsk.grp;
+    }
+  }    
+  }
+
+  return content;
+}
+
+function editTaskItem(node: TreeItem){
+  const tsk = <Task>node.content;
+    tsk.name = node.label?node.label:"unknown";
 }
 
 const uBPMS = useBPMSStore();
@@ -69,7 +84,7 @@ function CreateTree(): TreeItem[] {
           prGlist.push(...v1)
         } else
         {
-          prGlist.push({selectable: false, label: k1, children: v1, key: cntr++, icon: 'extension', level: 2})
+          prGlist.push({selectable: false, label: k1, children: v1, key: cntr++, icon: 'extension', level: 2, content: {grp: key}})
         }
         
       }

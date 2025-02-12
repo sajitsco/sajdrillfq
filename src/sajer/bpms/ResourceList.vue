@@ -1,8 +1,9 @@
 <template>
-<add-resource ref="popup1" @ok="onOK" @cancel="popup1.hide();" />
+<pop-up v-if="isAddResourceVisible" @ok="onOK"  v-model="isAddResourceVisible" :comp="AddResource" />
   <q-card :style="{backgroundColor: bgColor}">
     <q-card-section class="q-pt-xs">
-      <q-btn round icon="add" color="green" @click="showPopUp()" /><span
+      <q-btn round icon="add" color="green" @click="isAddResourceVisible = true" />
+      <span
         style="margin: 10px; font-size: 18px; font-weight: bolder"
         >{{ title }}</span
       >
@@ -24,18 +25,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import type { Resource } from './entities'
-import AddResource from './AddResource.vue'
+
+import PopUp from "../components/PopUp.vue";
+const AddResource = defineAsyncComponent(() => import('./AddResource.vue'),)
+const isAddResourceVisible = ref(false);
 
 const icons = ref(<Record<string, string>>{ file: 'file_open', asdf: 'check' })
-const popup1 = ref(<typeof AddResource>(<unknown>null))
 
-function showPopUp() {
-  popup1.value.show()
-}
 function onOK(res: Resource) {
-  console.log(res);
   list.value.push(res)
 }
 

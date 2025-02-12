@@ -1,10 +1,8 @@
 <template>
-  <div v-show="showPopup" style="position: fixed;top:0px;left:0px; width: 100%; height: 100%; background-color: gray; z-index: 11"  @click="showPopup=false">
-    <q-card class="q-pa-sm fixed-center" style="max-width: 500px; width: 99%; height: 99%"  @click.stop>
       <div style="height: 100%;display: grid;grid-template-rows: max-content auto max-content;">
         <div>
           <div style="text-align: center;">
-          <q-btn-toggle v-model="model" push rounded glossy toggle-color="purple" :options="[
+          <q-btn-toggle v-model="optn" push rounded glossy toggle-color="purple" :options="[
             { value: 'product', slot: 'product' },
             { value: 'file', slot: 'file' }
           ]">
@@ -28,18 +26,16 @@
           </q-btn-toggle>
         </div></div>
 <div style="padding: 5px;">
-        <div v-if="model == 'file'" style="padding: 10px;"><q-btn round icon="file_present" color="green"
+        <div v-if="optn == 'file'" style="padding: 10px;"><q-btn round icon="file_present" color="green"
             @click="func1()" style="margin-left: 10px" /></div>
-            <ed-view :new-item="newResItem" v-model="res" v-if="model == 'product'" :data="simple" :max-level="3" @ok="onAddTask" @cancel="console.log('cancel')" />
+            <ed-view :edit-item="editResItem" :new-item="newResItem" v-model="res" v-if="optn == 'product'" :data="simple" :max-level="3" @ok="onAddTask" @cancel="console.log('cancel')" />
 </div>
 <div><q-toolbar class="bg-primary text-white rounded-borders">
         <q-btn v-if="res" round size="large" flat icon="check" @click="onOk()" color="green" class="q-mr-xs" />
         <q-space />
-        <q-btn round size="large" flat icon="close" @click="$emit('cancel')" color="red" class="q-mr-xs" />
+        <q-btn round size="large" flat icon="close" @click="model = false;$emit('cancel');" color="red" class="q-mr-xs" />
       </q-toolbar></div>
         </div>
-    </q-card>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -47,38 +43,24 @@ import { ref } from 'vue';
 import type { Files, Resource, TreeItem } from './entities';
 import { api } from '../../boot/axios';
 import EdView from '../components/EdView.vue';
-const model = ref("file");
 
+const model = defineModel();
+
+const optn = ref("file");
 const res = ref(<Resource><unknown>null)
 const cnt = ref(0);
 
 const emit = defineEmits({
-  // No validation
   cancel: null,
-
-  // Validate submit event
   ok: null,
 })
 
-const showPopup = ref(false);
 
 function onOk() {
-  showPopup.value = false;
+  model.value = false;
+  console.log(res.value);
   emit('ok', res.value);
 }
-
-function show() {
-  res.value = <Resource><unknown>null;
-  showPopup.value = true;
-}
-
-function hide() {
-  showPopup.value = false;
-}
-
-defineExpose({
-  show, hide
-})
 
 function func1() {
   const i1 = document.createElement('input')
@@ -132,7 +114,18 @@ function onAddTask(dt: unknown) {
   console.log(dt);
 }
 
-function newResItem() {
-  return {name: "Res1"}
+function newResItem(node: TreeItem) {
+  const res: Resource = {title: "title", type: 'product', id: "",countable: true, count: 1, data: null};
+  if(node){
+    if(node.content){
+      res.data = node.content;
+    }
+  }
+  return res
+}
+
+function editResItem(node: TreeItem){
+  const res = <Resource>node.content;
+  res.title = node.label?node.label:"unknown";
 }
 </script>

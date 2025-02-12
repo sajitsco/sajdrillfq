@@ -52,13 +52,14 @@ const props = defineProps<{
   data: TreeItem[],
   maxLevel: number,
   newItem: (node: TreeItem) => unknown;
+  editItem: (node: TreeItem) => void;
 }>()
 
 const model = defineModel();
 const selected = ref(null)
 const filter = ref('')
 const isInEditMode = ref(false);
-let cntr = 100;
+let cntr = 10000;
 let selectedParent: TreeItem = <TreeItem><unknown>null;
 
 function addNewItem(node: TreeItem) {
@@ -70,13 +71,14 @@ function addNewItem(node: TreeItem) {
   } else {
     selectedParent = node;
   isInEditMode.value = true;
-  node.children?.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: node.level + 1, selectable:node.level==(props.maxLevel-1)?true:false, content: cntnt });
+  node.children?.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: node.level + 1, selectable:node.level==(props.maxLevel-1)?true:false, content: cntnt, parent: node });
   }
 }
 
 function checkInItem(node: TreeItem) {
   isInEditMode.value = false;
   node.key = cntr++;
+  props.editItem(node);
 }
 
 function deleteItem() {

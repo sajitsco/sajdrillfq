@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <add-task v-if="isAddTaskVisible" @hide="isAddTaskVisible=false" />
+    <pop-up v-if="isAddTaskVisible" v-model="isAddTaskVisible" :comp="AddTask" />
     <div class="row">
       <div style="width: 100%; background-color: cornflowerblue;" class="q-ma-xs, q-pa-xs">
         <template v-if="$s.b.activeTask">
@@ -22,8 +22,10 @@
 <script setup lang="ts">
 import ATask from "src/sajer/bpms/ATask.vue"
 import ActiveTask from "src/sajer/bpms/ActiveTask.vue"
-import AddTask from "src/sajer/bpms/AddTask.vue";
-import { ref } from "vue";
+import { defineAsyncComponent, ref } from "vue";
+import PopUp from "./components/PopUp.vue";
+
+const AddTask = defineAsyncComponent(() => import('./bpms/AddTask.vue'),)
 
 const isAddTaskVisible = ref(false);
 
