@@ -23,6 +23,7 @@ export enum ATaskStatus{
     id: string;
     data: unknown;
     count: number;
+    parent: Resource|null;
   }
 
   export interface TreeItem extends QTreeNode{

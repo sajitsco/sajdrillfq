@@ -28,7 +28,7 @@
 <div style="padding: 5px;">
         <div v-if="optn == 'file'" style="padding: 10px;"><q-btn round icon="file_present" color="green"
             @click="func1()" style="margin-left: 10px" /></div>
-            <ed-view :edit-item="editResItem" :new-item="newResItem" v-model="res" v-if="optn == 'product'" :data="simple" :max-level="3" @ok="onAddTask" @cancel="console.log('cancel')" />
+            <ed-view :edit-item="editResItem" :new-item="newResItem" v-model="res" v-if="optn == 'product'" :data="simple" :max-level="-1" @ok="onAddTask" @cancel="console.log('cancel')" />
 </div>
 <div><q-toolbar class="bg-primary text-white rounded-borders">
         <q-btn v-if="res" round size="large" flat icon="check" @click="onOk()" color="green" class="q-mr-xs" />
@@ -84,7 +84,7 @@ function onChange(event: Event): void {
         },
       }).then((rs) => {
         console.log(rs.data.id);
-        res.value = { type: 'file', id: (cnt.value++).toString(), countable: false, data: {}, title: rs.data.name, count: 1 };
+        res.value = { type: 'file', id: (cnt.value++).toString(), countable: false, data: {}, title: rs.data.name, count: 1, parent: null };
       })
     }
   }
@@ -95,12 +95,14 @@ function CreateResourcesTree(): TreeItem[] {
     let cntr = 1;
     
     for (let i = 0; i < 4; i++) {
-      const grp: TreeItem = {label: "G"+i, key: cntr++, level: 1, children: []}
+      const res1: Resource = { type: 'product', id: (cntr).toString(), countable: true, data: {}, title: "G"+i, count: 1, parent: null }
+      const grp: TreeItem = {label: "G"+i, key: cntr++, level: 1, children: [], content: res1}
       for (let j = 0; j < 4; j++) {
-        const sgrp: TreeItem = {label: "SG"+j, key: cntr++,level: 2, children: []}
+        const res2: Resource = { type: 'product', id: (cntr).toString(), countable: true, data: {}, title: "SG"+j, count: 1, parent: res1 }
+        const sgrp: TreeItem = {label: "SG"+j, key: cntr++,level: 2, children: [], content: res2}
         for (let k = 0; k < 4; k++) {
-          const res: Resource = { type: 'product', id: (cntr++).toString(), countable: true, data: {}, title: "PR"+k, count: 1 }
-          const pr: TreeItem = {label: "PR"+k, key: cntr++, content: res, level: 3}
+          const res3: Resource = { type: 'product', id: (cntr).toString(), countable: true, data: {}, title: "PR"+k, count: 1, parent: res2 }
+          const pr: TreeItem = {label: "PR"+k, key: cntr++, content: res3, level: 3}
           sgrp.children?.push(pr);
         }
         grp.children?.push(sgrp);
@@ -115,12 +117,7 @@ function onAddTask(dt: unknown) {
 }
 
 function newResItem(node: TreeItem) {
-  const res: Resource = {title: "title", type: 'product', id: "",countable: true, count: 1, data: null};
-  if(node){
-    if(node.content){
-      res.data = node.content;
-    }
-  }
+  const res: Resource = {title: "title", type: 'product', id: "",countable: true, count: 1, data: null, parent: <Resource>node?.content};
   return res
 }
 

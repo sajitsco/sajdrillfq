@@ -10,7 +10,7 @@
       <hr />
       <div>
         <div style="width: 100%" v-for="item in list" :key="item.id" class="q-ma-xs, q-pa-xs">
-          <q-icon :name="icons[item.type]" size="md" />{{ item.title
+          <q-icon :name="icons[item.type]" size="md" />{{ generateTitle(item)
           }}<q-input
             style="float: left"
             dense
@@ -46,4 +46,14 @@ defineProps<{
     bgColor: string,
     title: string
 }>()
+
+function generateTitle(res: Resource): string{
+  let title = res.title;
+  let parent = res.parent;
+  while( parent){
+    title += "<"+parent.title;
+    parent = parent.parent;
+  }
+  return title;
+}
 </script>

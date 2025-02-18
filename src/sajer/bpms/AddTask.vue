@@ -46,7 +46,7 @@ function newTaskItem(node: TreeItem){
 
 function editTaskItem(node: TreeItem){
   const tsk = <Task>node.content;
-    tsk.name = node.label?node.label:"unknown";
+  tsk.name = node.label?node.label:"unknown";
 }
 
 const uBPMS = useBPMSStore();

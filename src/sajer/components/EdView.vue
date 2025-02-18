@@ -6,7 +6,7 @@
       <template v-slot:default-header="prop">
         <div v-if="prop.node.key > 0" class="row items-center mjitem">
           <div class="text-weight-bold">
-            {{ prop.node.label }}<q-btn v-if="prop.node.level < maxLevel && !isInEditMode" icon="add" round flat size="sm"
+            {{ prop.node.label }}<q-btn v-if="(prop.node.level < maxLevel || maxLevel == -1) && !isInEditMode" icon="add" round flat size="sm"
               @click="addNewItem(prop.node)" />
           </div>
         </div>
@@ -67,11 +67,14 @@ function addNewItem(node: TreeItem) {
   if (node == null) {
     selectedParent = <TreeItem><unknown>null;
     // eslint-disable-next-line vue/no-mutating-props
-    props.data.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: 1, type: 1, selectable: false, content: cntnt });
+    props.data.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: 1, type: 1, selectable: props.maxLevel == -1, content: cntnt });
   } else {
     selectedParent = node;
   isInEditMode.value = true;
-  node.children?.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: node.level + 1, selectable:node.level==(props.maxLevel-1)?true:false, content: cntnt, parent: node });
+  if(!node.children){
+    node.children = [];
+  }
+  node.children?.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: node.level + 1, selectable:(node.level==(props.maxLevel-1) || props.maxLevel == -1)?true:false, content: cntnt, parent: node });
   }
 }
 
