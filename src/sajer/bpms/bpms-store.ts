@@ -7,6 +7,7 @@ export const useBPMSStore = defineStore('bpms', {
   state: () => ({
     activeTask: <ATask>(<unknown>null),
     atasks: <ATask[]>[],
+    ctasks: <ATask[]>[],
     tasks: <Task[]>[],
   }),
 
@@ -36,6 +37,16 @@ export const useBPMSStore = defineStore('bpms', {
         })
         .catch(() => {
           this.atasks = []
+        })
+    },
+    getCTasks() {
+      api
+        .get<ATask[]>('/s/bpms/atask?status=COMPLETED')
+        .then((res) => {
+          this.ctasks = res.data
+        })
+        .catch(() => {
+          this.ctasks = []
         })
     },
     async updateATasks(atask: ATask) {
