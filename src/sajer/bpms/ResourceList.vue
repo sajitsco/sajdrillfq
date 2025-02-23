@@ -9,9 +9,9 @@
       >
       <hr />
       <div>
-        <div style="width: 100%" v-for="item in list" :key="item.id" class="q-ma-xs, q-pa-xs">
-          <q-icon :name="icons[item.type]" size="md" />{{ generateTitle(item)
-          }}<q-input
+        <div style="width: 100%" v-for="item,index in list" :key="item.id" class="q-ma-xs, q-pa-xs">
+          <resource-editor v-if="list[index]" v-model="list[index]" />
+          <q-icon :name="icons[item.type]" size="md" /><q-input
             style="float: left"
             dense
             v-if="item.countable"
@@ -27,6 +27,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue'
 import type { Resource } from './entities'
+import ResourceEditor from './ResourceEditor.vue';
 
 import PopUp from "../components/PopUp.vue";
 const AddResource = defineAsyncComponent(() => import('./AddResource.vue'),)
@@ -47,13 +48,5 @@ defineProps<{
     title: string
 }>()
 
-function generateTitle(res: Resource): string{
-  let title = res.title;
-  let parent = res.parent;
-  while( parent){
-    title += "<"+parent.title;
-    parent = parent.parent;
-  }
-  return title;
-}
+
 </script>

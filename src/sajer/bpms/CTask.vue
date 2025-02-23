@@ -7,9 +7,7 @@
       <q-btn v-if="atask.status == ATaskStatus.ACTIVE" round color="secondary" icon="pause" @click="
         atask.status = ATaskStatus.PAUSED;
       $s.b.updateATasks(atask)
-        " />
-      <span style="padding: 6px">{{ atask.task.grp }}>{{ atask.task.subgroup }}>{{ atask.task.name }}</span>
-      <q-space />
+        " /><task-editor v-model="atask.task" /><q-space />
       <q-btn color="primary" round :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
         @click="expanded = !expanded" />
     </q-card-actions>
@@ -42,6 +40,7 @@ import type { ATask } from './entities'
 import { ATaskStatus } from './entities'
 import { ref } from 'vue';
 import ResourceList from './ResourceList.vue';
+import TaskEditor from './TaskEditor.vue';
 
 const expanded = ref(false)
 const atask = defineModel<ATask>({

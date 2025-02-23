@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%;display: grid; grid-template-rows: auto max-content;">
     <q-scroll-area>
-      <q-tree ref="tr" style="font-size: 28px" selected-color="green-9" :nodes="data" node-key="key" v-model:selected="selected" :filter="filter"
+      <q-tree ref="tr" style="font-size: 28px" selected-color="green-9" :nodes="trd" node-key="key" v-model:selected="selected" :filter="filter"
       :filter-method="myFilterMethod" @update:selected="onSelect">
       <template v-slot:default-header="prop">
         <div v-if="prop.node.key > 0" class="row items-center mjitem">
@@ -55,6 +55,8 @@ const props = defineProps<{
   editItem: (node: TreeItem) => void;
 }>()
 
+const trd = ref(props.data);
+
 const model = defineModel();
 const selected = ref(null)
 const filter = ref('')
@@ -66,8 +68,7 @@ function addNewItem(node: TreeItem) {
   const cntnt = props.newItem(node);
   if (node == null) {
     selectedParent = <TreeItem><unknown>null;
-    // eslint-disable-next-line vue/no-mutating-props
-    props.data.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: 1, type: 1, selectable: props.maxLevel == -1, content: cntnt });
+    trd.value.push({ label: "new Item", children: [], key: -cntr++, icon: 'check', level: 1, type: 1, selectable: props.maxLevel == -1, content: cntnt });
   } else {
     selectedParent = node;
   isInEditMode.value = true;
@@ -87,8 +88,7 @@ function checkInItem(node: TreeItem) {
 function deleteItem() {
   isInEditMode.value = false;
   if (selectedParent == null) {
-    // eslint-disable-next-line vue/no-mutating-props
-    delete props.data[props.data.length - 1];
+    delete trd.value[trd.value.length - 1];
   }
   if (selectedParent.children?.length)
     delete selectedParent.children[selectedParent.children?.length - 1];

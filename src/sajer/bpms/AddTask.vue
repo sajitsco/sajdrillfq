@@ -17,8 +17,7 @@ import { useBPMSStore } from "./bpms-store";
 
 const task = ref(null)
 function onAddTask() {
-  console.log(task.value);
-  emit('ok');
+  emit('ok', task.value);
 }
 
 const emit = defineEmits({
