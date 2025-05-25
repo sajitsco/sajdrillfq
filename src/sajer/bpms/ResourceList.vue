@@ -10,6 +10,7 @@
       <hr />
       <div>
         <div style="width: 100%" v-for="item,index in list" :key="item.id" class="q-ma-xs, q-pa-xs">
+          <q-icon name="delete" size="32px" color="red"/>
           <resource-editor v-if="list[index]" v-model="list[index]" />
           <q-icon :name="icons[item.type]" size="md" /><q-input
             style="float: left"

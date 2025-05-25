@@ -10,3 +10,12 @@
   body {
     font-family: yekan, Verdana, Geneva, Tahoma, sans-serif;
   }
+  $ars: 48px;
+
+  .q-tree__arrow {
+    font-size: $ars;
+  }
+
+.q-tree__children {
+    padding-left: $ars - 8px;
+}

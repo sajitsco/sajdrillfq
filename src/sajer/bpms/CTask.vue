@@ -4,10 +4,7 @@
     : { backgroundColor: 'aquamarine' }
     " class="q-ma-xs, q-pa-xs">
     <q-card-actions>
-      <q-btn v-if="atask.status == ATaskStatus.ACTIVE" round color="secondary" icon="pause" @click="
-        atask.status = ATaskStatus.PAUSED;
-      $s.b.updateATasks(atask)
-        " /><task-editor v-model="atask.task" /><q-space />
+      <task-editor @on-change="$s.b.updateATasks(atask)" v-model="atask.task" /><q-space />
       <q-btn color="primary" round :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
         @click="expanded = !expanded" />
     </q-card-actions>

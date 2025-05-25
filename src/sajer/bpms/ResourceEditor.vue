@@ -1,10 +1,10 @@
 <template>
     <pop-up v-if="isAddResourceVisible" @ok="onOK" v-model="isAddResourceVisible" :comp="AddResource" />
-<span style="padding: 6px">
+<span><q-icon  size="32px" name="edit" color="yellow" @click="isAddResourceVisible = true"/>
     <span v-if="resource.id != '' " >
-    <q-icon name="check" /><q-icon  size="32px" name="edit" color="yellow" @click="isAddResourceVisible = true"/>
+    <q-icon name="check" />
     </span>
-    <q-icon v-else name="save" color="red" size="32px" @click="onTaskSave" />
+    <q-icon v-else name="save" color="green" size="32px" @click="onTaskSave" />
     {{ generateTitle(resource)
           }} ({{ resource.id }})</span>
 </template>
@@ -13,26 +13,32 @@
 import type {Resource} from "./entities"
 import PopUp from "../components/PopUp.vue";
 import { defineAsyncComponent, ref } from "vue";
-import { api } from "src/boot/axios";
+//import { api } from "src/boot/axios";
 const AddResource = defineAsyncComponent(() => import('./AddResource.vue'),)
 
 const resource = defineModel<Resource>({required: true});
+  const emits = defineEmits({
+  onChange: null,
+});
+
 const isAddResourceVisible = ref(false);
 
 async function onTaskSave() {
     console.log("save");
-    await api
+    /* await api
         .post<Resource>('/s/bpms/task', resource.value)
         .then((ret) => {
           resource.value = ret.data;
+          emits('onChange');
         })
         .catch((err) => {
           console.log(err)
-        })
+        }) */
 }
 
 function onOK(rsrc: Resource){
   resource.value = rsrc;
+  emits('onChange');
 }
 
 function generateTitle(res: Resource): string{

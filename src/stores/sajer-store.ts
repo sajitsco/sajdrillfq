@@ -47,12 +47,14 @@ export const useSajerStore = defineStore('sajer', {
         .get('/p/auth/op/token', { auth: { password: password, username: username } })
         .then((res) => {
           const jwt: IJWT = parseJwt(res.data);
-          api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data
-          this.loggedIn = true
+          api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data;
+          this.loggedIn = true;
+          this.roles = jwt.roles;
+          console.log(jwt);
           uBPMS.getATasks();
           uBPMS.getTasks();
           uACC.getAccounts();
-          this.roles = jwt.roles;
+          
           if(jwt.roles == "ROLE_ADMIN"){
             uBPMS.getCTasks();
             this.router.push("/f/admin");

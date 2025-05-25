@@ -16,6 +16,9 @@ import { api } from "src/boot/axios";
 const AddTask = defineAsyncComponent(() => import('./AddTask.vue'),)
 
 const task = defineModel<Task>({required: true});
+const emits = defineEmits({
+  onChange: null,
+});
 const isAddTaskVisible = ref(false);
 
 async function onTaskSave() {
@@ -24,6 +27,7 @@ async function onTaskSave() {
         .post<Task>('/s/bpms/task', task.value)
         .then((ret) => {
           task.value = ret.data;
+          emits('onChange');
         })
         .catch((err) => {
           console.log(err)
@@ -32,5 +36,6 @@ async function onTaskSave() {
 
 function onOK(tsk: Task){
     task.value = tsk;
+    emits('onChange');
 }
 </script>
