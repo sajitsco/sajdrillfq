@@ -1,6 +1,6 @@
 <template>
     <pop-up v-if="isAddResourceVisible" @ok="onOK" v-model="isAddResourceVisible" :comp="AddResource" />
-<span><q-icon  size="32px" name="edit" color="yellow" @click="isAddResourceVisible = true"/>
+<span :title="generateTitle(resource)"><q-icon  size="32px" name="edit" color="yellow" @click="isAddResourceVisible = true"/>
     <span v-if="resource.id != '' " >
     <q-icon name="check" />
     </span>
@@ -48,6 +48,19 @@ function generateTitle(res: Resource): string{
     title += "<"+parent.title;
     parent = parent.parent;
   }
+  //if( title.length > 20){
+  //  return title.substring(0,20)+'...';
+  //}
   return title;
 }
 </script>
+
+<style>
+span:active:after {
+  position: absolute;
+  content:attr(title);
+  background: #bada55;
+  left: 0px;
+  top: 45px;
+}
+</style>

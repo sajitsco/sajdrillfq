@@ -1,14 +1,12 @@
 <template>
   <div style="height: 100%;display: grid; grid-template-rows: auto max-content;">
     <q-scroll-area>
-      <q-tree ref="tr" style="font-size: 28px" selected-color="green-9" :nodes="trd" node-key="key" v-model:selected="selected" :filter="filter"
+      <q-tree ref="tr" style="font-size: 28px" selected-color="green-9" :nodes="trd" node-key="key" v-model:selected="selected" :filter="filter" v-model:expanded="expandedKeys"
       :filter-method="myFilterMethod" @update:selected="onSelect">
       <template v-slot:default-header="prop">
         <div v-if="prop.node.key > 0" class="row items-center mjitem">
-          <div class="text-weight-bold">
-            {{ prop.node.label }}<q-btn v-if="(prop.node.level < maxLevel || maxLevel == -1) && !isInEditMode" icon="add" round flat size="sm"
+            {{ prop.node.label }}<q-btn v-if="(prop.node.level < maxLevel || maxLevel == -1) && !isInEditMode && isExpanded(prop.node.key)" icon="add" round flat size="sm"
               @click="addNewItem(prop.node)" />
-          </div>
         </div>
         <div v-else @keypress.stop @click.stop>
           <q-input bottom-slots v-model="prop.node.label" label="Label" dense @click.stop>
@@ -59,6 +57,7 @@ const trd = ref(props.data);
 
 const model = defineModel();
 const selected = ref(null)
+const expandedKeys = ref([])
 const filter = ref('')
 const isInEditMode = ref(false);
 let cntr = 10000;
@@ -121,4 +120,18 @@ function onSelect(){
     model.value = null;
   }
 }
+
+function isExpanded(key: unknown): boolean{
+  if(tr.value && key){
+    return tr.value.isExpanded(key);
+  }
+  
+  return false;
+}
 </script>
+
+<style>
+.q-tree__icon, .q-tree__node-header-content .q-icon{
+    font-size: 36px;
+}
+</style>

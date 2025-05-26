@@ -9,16 +9,18 @@
       >
       <hr />
       <div>
-        <div style="width: 100%" v-for="item,index in list" :key="item.id" class="q-ma-xs, q-pa-xs">
-          <q-icon name="delete" size="32px" color="red"/>
+        <div v-for="item,index in list" :key="item.id" class="q-ma-xs, q-pa-xs, row">
+          <div class="col-10 ellipsis"><q-icon name="delete" size="32px" color="red"/>
           <resource-editor v-if="list[index]" v-model="list[index]" />
-          <q-icon :name="icons[item.type]" size="md" /><q-input
-            style="float: left"
+          <q-icon :name="icons[item.type]" size="md" /></div>
+          <div class="col-2"><q-input
+            style="float: left;"
             dense
             v-if="item.countable"
             v-model="item.count"
             type="number"
-          />
+          /></div>
+          
         </div>
       </div>
     </q-card-section>

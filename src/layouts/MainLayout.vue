@@ -7,11 +7,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 
-const rt = useRouter()
-  const role = window.localStorage.getItem('role')
-  if (role) rt.push('/f/bpms')
+// const rt = useRouter()
+//   const role = window.localStorage.getItem('role')
+//   if (role) rt.push('/f/bpms')
 </script>
 
 <style></style>
