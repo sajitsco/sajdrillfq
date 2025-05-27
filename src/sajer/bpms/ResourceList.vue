@@ -10,7 +10,7 @@
       <hr />
       <div>
         <div v-for="item,index in list" :key="item.id" class="q-ma-xs, q-pa-xs, row">
-          <div class="col-10 ellipsis"><q-icon name="delete" size="32px" color="red"/>
+          <div class="col-10 ellipsis">
           <resource-editor v-if="list[index]" v-model="list[index]" />
           <q-icon :name="icons[item.type]" size="md" /></div>
           <div class="col-2"><q-input
