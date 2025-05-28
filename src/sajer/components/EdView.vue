@@ -5,7 +5,7 @@
       :filter-method="myFilterMethod" @update:selected="onSelect">
       <template v-slot:default-header="prop">
         <div v-if="prop.node.key > 0" class="row items-center mjitem">
-            {{ prop.node.label }}<q-btn v-if="(prop.node.level < maxLevel || maxLevel == -1) && !isInEditMode && isExpanded(prop.node.key)" icon="add" round flat size="sm"
+            {{ prop.node.label }}<q-btn v-if="((prop.node.level < maxLevel || maxLevel == -1) && !isInEditMode && isExpanded(prop.node.key)) || (prop.node.children && prop.node.children.length == 0)" icon="add" round flat size="sm"
               @click="addNewItem(prop.node)" />
         </div>
         <div v-else @keypress.stop @click.stop>

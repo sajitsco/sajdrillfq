@@ -6,12 +6,12 @@ import { useBPMSStore } from 'src/sajer/bpms/bpms-store'
 const uBPMS = useBPMSStore()
 const uACC = useACCStore()
 
-interface IJWT{
-  exp: number;
-  iat: number;
-  iss: string;
-  roles: string;
-  sub: string;
+interface IJWT {
+  exp: number
+  iat: number
+  iss: string
+  roles: string
+  sub: string
 }
 
 export const useSajerStore = defineStore('sajer', {
@@ -26,16 +26,24 @@ export const useSajerStore = defineStore('sajer', {
       api
         .get('/p/sajer', { headers: { Authorization: '' } })
         .then(() => {
+          console.log("0")
           this.connected = true
 
-          api
+          const token = window.localStorage.getItem('token')
+          if (token) {
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + token
+            api
             .get('/s/sajer')
             .then(() => {
+              this.updateData(token)
               this.loggedIn = true
             })
             .catch(() => {
               this.loggedIn = false
             })
+          }
+
+          
         })
         .catch(() => {
           this.connected = false
@@ -46,27 +54,26 @@ export const useSajerStore = defineStore('sajer', {
       api
         .get('/p/auth/op/token', { auth: { password: password, username: username } })
         .then((res) => {
-          const jwt: IJWT = parseJwt(res.data);
-          api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data;
-          this.loggedIn = true;
-          this.roles = jwt.roles;
-          console.log(jwt);
-          uBPMS.getATasks();
-          uBPMS.getTasks();
-          uACC.getAccounts();
-          
-          if(jwt.roles == "ROLE_ADMIN"){
-            uBPMS.getCTasks();
-            this.router.push("/f/admin");
-          } else {
-            this.router.push("/f/bpms")
-          }
-          window.localStorage.setItem("role",this.roles);
+          this.updateData(res.data)
+          //window.localStorage.setItem("role",this.roles);
         })
         .catch((err) => {
           this.loggedIn = false
           console.log(err)
         })
+    },
+    updateData(token: string) {
+      const jwt: IJWT = parseJwt(token)
+      api.defaults.headers.common['Authorization'] = 'Bearer ' + token
+      window.localStorage.setItem('token', token)
+      this.loggedIn = true
+      this.roles = jwt.roles
+      uBPMS.getATasks()
+      uBPMS.getTasks()
+      uACC.getAccounts()
+      if (this.roles == 'ROLE_ADMIN') {
+        uBPMS.getCTasks()
+      }
     },
   },
 })

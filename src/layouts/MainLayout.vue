@@ -3,10 +3,12 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+    <action-button />
   </q-layout>
 </template>
 
 <script setup lang="ts">
+import ActionButton from 'src/sajer/components/ActionButton.vue';
 // import { useRouter } from 'vue-router';
 
 // const rt = useRouter()

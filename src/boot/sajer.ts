@@ -17,7 +17,14 @@ declare module 'vue' {
 
 export default defineBoot(({ app }) => {
   app.config.globalProperties.$s = es
-  
+  es.s.connect()
+
+  if (es.s.roles == 'ROLE_ADMIN') {
+    es.s.router.push('/f/admin')
+  } else {
+    es.s.router.push('/f/bpms')
+  }
+  setInterval(() => es.s.connect(), 60000)
 })
 
 export { es }

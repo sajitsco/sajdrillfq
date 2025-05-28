@@ -2,9 +2,9 @@
   <pop-up v-if="isAddResourceVisible" @ok="onOK" v-model="isAddResourceVisible" :comp="AddResource" />
   <span :title="generateTitle(resource)">
     <q-fab color="grey" icon="more_vert" direction="right" padding="xs">
-      <q-btn padding="xs" fab color="red" icon="delete" />
-      <q-btn padding="xs" fab color="yellow" icon="edit" @click="isAddResourceVisible = true" />
-      <q-btn v-if="resource.id == ''" padding="xs" fab color="green" @click="onTaskSave" icon="save" />
+      <q-fab-action padding="xs" fab color="red" text-color="black" icon="delete" />
+      <q-fab-action padding="xs" fab color="yellow" text-color="black" icon="edit" @click="isAddResourceVisible = true" />
+      <q-fab-action v-if="resource.id == ''" padding="xs" fab color="green" text-color="black" @click="onTaskSave" icon="save" />
     </q-fab>
     {{ generateTitle(resource)
     }} ({{ resource.id }})</span>

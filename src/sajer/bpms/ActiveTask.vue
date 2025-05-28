@@ -40,8 +40,9 @@
 <script setup lang="ts">
 import type { ATask } from './entities'
 import { ATaskStatus } from './entities'
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import ResourceList from './ResourceList.vue';
+import { useBPMSStore } from './bpms-store';
 
 const expanded = ref(true)
 const atask = defineModel<ATask>({
@@ -50,4 +51,9 @@ const atask = defineModel<ATask>({
 
 if (!atask.value.inpts) atask.value.inpts = [];
 if (!atask.value.otpts) atask.value.otpts = [];
+
+const uBPMS = useBPMSStore();
+watch( atask.value, () => {
+  uBPMS.updateATasks(uBPMS.activeTask)
+})
 </script>
