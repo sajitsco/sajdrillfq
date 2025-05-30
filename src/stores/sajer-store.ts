@@ -26,7 +26,6 @@ export const useSajerStore = defineStore('sajer', {
       api
         .get('/p/sajer', { headers: { Authorization: '' } })
         .then(() => {
-          console.log("0")
           this.connected = true
 
           const token = window.localStorage.getItem('token')

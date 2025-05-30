@@ -16,7 +16,7 @@
     <q-slide-transition>
       <div v-show="expanded">
         <q-card-section>
-          <q-input v-model="atask.description" label="توضیحات" />
+          <q-input v-model="atask.description" label="توضیحات" debounce="5000" />
         </q-card-section>
         <q-card-section>
           <resource-list :key="1" :bg-color="'#FFBBBB'" :model-value="atask.inpts" title="مصارف ورودی" />
@@ -56,4 +56,5 @@ const uBPMS = useBPMSStore();
 watch( atask.value, () => {
   uBPMS.updateATasks(uBPMS.activeTask)
 })
+
 </script>
